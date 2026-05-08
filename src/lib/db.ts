@@ -1,38 +1,15 @@
 import { PrismaClient } from "@/generated/prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-
-/** Parse a mysql:// URL into MariaDB adapter connection params */
-function parseDbUrl(rawUrl: string) {
-  const defaults = {
-    host: "127.0.0.1",
-    port: 3306,
-    user: "root",
-    password: "",
-    database: "new_wardrobe",
-  };
-
-  try {
-    // Replace mysql:// or mysql2:// with http:// so URL API can parse it
-    const normalized = rawUrl.trim().replace(/^mysql2?:\/\//, "http://");
-    const u = new URL(normalized);
-    return {
-      host: u.hostname || defaults.host,
-      port: parseInt(u.port) || defaults.port,
-      user: decodeURIComponent(u.username) || defaults.user,
-      password: decodeURIComponent(u.password) || defaults.password,
-      database: u.pathname.replace(/^\//, "") || defaults.database,
-    };
-  } catch {
-    console.error("[db] Could not parse DATABASE_URL, using defaults");
-    return defaults;
-  }
-}
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
 function createPrismaClient() {
-  const conn = parseDbUrl(
-    process.env.DATABASE_URL ?? "mysql://root:@127.0.0.1:3306/new_wardrobe"
-  );
-  const adapter = new PrismaMariaDb({ ...conn, connectionLimit: 10 });
+  const connectionString =
+    process.env.POSTGRES_PRISMA_URL ?? // Vercel Postgres (pgbouncer pooled)
+    process.env.DATABASE_URL ??
+    "";
+
+  const pool = new Pool({ connectionString, max: 10 });
+  const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
 
@@ -43,7 +20,6 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma =
   globalForPrisma.prisma ?? (globalForPrisma.prisma = createPrismaClient());
 
-// In dev, clear singleton so `prisma generate` changes take effect on next HMR
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = undefined;
 }

@@ -1,15 +1,11 @@
 import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
-function parseDbUrl(url: string) {
-  try {
-    const u = new URL(url.replace(/^mysql2?:\/\//, "http://"));
-    return { host: u.hostname || "127.0.0.1", port: parseInt(u.port) || 3306, user: decodeURIComponent(u.username) || "root", password: decodeURIComponent(u.password) || "", database: u.pathname.replace(/^\//, "") || "new_wardrobe" };
-  } catch { return { host: "127.0.0.1", port: 3306, user: "root", password: "", database: "new_wardrobe" }; }
-}
-
-const conn = parseDbUrl(process.env.DATABASE_URL ?? "mysql://root:@localhost:3306/new_wardrobe");
-const adapter = new PrismaMariaDb({ ...conn, connectionLimit: 5 });
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL_NON_POOLING ?? process.env.DATABASE_URL ?? "",
+});
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 const settings = [

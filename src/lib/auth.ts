@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -13,6 +12,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
+
+        // Lazy import to avoid Edge Runtime issues
+        const { prisma } = await import("@/lib/db");
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
@@ -41,6 +43,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/admin/login",
   },
   callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+      const isLoginPage = nextUrl.pathname === "/admin/login";
+      if (!isLoginPage && !isLoggedIn) return false;
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as { role: string }).role;

@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// =================== AUTH ===================
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+// =================== PRODUCTS ===================
+model Product {
+  id          String              @id @default(cuid())
+  name        String
+  slug        String              @unique
+  description String              @db.Text
+  price       Decimal             @db.Decimal(10, 2)
+  salePrice   Decimal?            @db.Decimal(10, 2)
+  sku         String?             @unique
+  stock       Int                 @default(0)
+  featured    Boolean             @default(false)
+  published   Boolean             @default(false)
+  categoryId  String?
+  category    Category?           @relation(fields: [categoryId], references: [id])
+  images      ProductImage[]
+  model3d       Model3D?
+  dimensions    ProductDimensions?
+  colorVariants ProductColorVariant[]
+  tags        String?             @db.Text
+  isProject   Boolean             @default(false)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([categoryId])
+  @@index([slug])
+  @@index([featured])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  url       String  @db.Text
+  alt       String?
+  order     Int     @default(0)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model ProductDimensions {
+  id        String  @id @default(cuid())
+  width     Float
+  height    Float
+  depth     Float
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+// =================== 3D MODELS ===================
+model Model3D {
+  id             String      @id @default(cuid())
+  productId      String      @unique
+  product        Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sourceImageUrl String      @db.Text
+  modelUrl       String?     @db.Text
+  thumbnailUrl   String?     @db.Text
+  taskId         String?
+  status         ModelStatus @default(PENDING)
+  errorMessage   String?     @db.Text
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+enum ModelStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// =================== CATEGORIES ===================
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?    @db.Text
+  imageUrl    String?
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+  order       Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([parentId])
+}
+
+// =================== CMS ===================
+model ContentSection {
+  id         String   @id @default(cuid())
+  sectionKey String   @unique
+  title      String?
+  subtitle   String?  @db.Text
+  body       String?  @db.LongText
+  imageUrl   String?
+  metadata   String?  @db.Text
+  updatedAt  DateTime @updatedAt
+}
+
+// =================== MEDIA ===================
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String   @db.Text
+  mimeType  String
+  size      Int
+  width     Int?
+  height    Int?
+  alt       String?
+  folder    String?  @default("general")
+  createdAt DateTime @default(now())
+}
+
+// =================== PROJECTS ===================
+model Project {
+  id          String         @id @default(cuid())
+  name        String
+  slug        String         @unique
+  description String?        @db.Text
+  category    String?
+  published   Boolean        @default(true)
+  order       Int            @default(0)
+  images      ProjectImage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([slug])
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  url       String  @db.Text
+  alt       String?
+  order     Int     @default(0)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+// =================== PRODUCT COLOR VARIANTS ===================
+model ProductColorVariant {
+  id        String  @id @default(cuid())
+  name      String
+  hex       String
+  order     Int     @default(0)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+// =================== ROOM PLANNER ===================
+model RoomConfiguration {
+  id          String   @id @default(cuid())
+  name        String
+  roomWidth   Float
+  roomHeight  Float
+  roomDepth   Float
+  objects     String   @db.LongText
+  cameraState String?  @db.Text
+  shareToken  String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// =================== SITE SETTINGS ===================
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.LongText
+  type      String   @default("text")   // text | textarea | image | color | boolean | json
+  label     String
+  group     String   @default("general")
+  updatedAt DateTime @updatedAt
+
+  @@index([group])
+}
+
+// =================== ANALYTICS ===================
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  userAgent String?  @db.Text
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+}

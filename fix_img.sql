@@ -1,0 +1,15 @@
+INSERT IGNORE INTO `ProductImage` (`id`,`productId`,`url`,`alt`,`order`) VALUES
+('pi_d0', 'cmoucsr2c000awsf17uymn76l', 'https://res.cloudinary.com/djghexldz/image/upload/v1778195037/new-wardrobe/media/iryidzgubhhkmdkzhiqx.jpg', 'minar-kale190-210-4-kapakli-2-cekmeceli-tacli-dola', 0),
+('pi_d1', 'cmoucsr2c000awsf17uymn76l', 'https://res.cloudinary.com/djghexldz/image/upload/v1778094335/new-wardrobe/media/np6ttktyuou8ysxxlrlv.jpg', 'minar-kale190-210-4-kapakli-2-cekmeceli-tacli-dola', 1),
+('pi_d2', 'cmoucsr2c000awsf17uymn76l', 'https://res.cloudinary.com/djghexldz/image/upload/v1778089877/new-wardrobe/media/xwcb5mklqzxawxt2ni34.jpg', 'minar-kale190-210-4-kapakli-2-cekmeceli-tacli-dola', 2),
+('pi_d3', 'cmoucsr2c000awsf17uymn76l', 'https://res.cloudinary.com/djghexldz/image/upload/v1778089829/new-wardrobe/media/gyazc4e7kma1o7kzjeto.jpg', 'minar-kale190-210-4-kapakli-2-cekmeceli-tacli-dola', 3),
+('pi_k0', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778089845/new-wardrobe/media/oura1pjjscmk6zhdbpof.jpg', 'maride-1.jpg', 0),
+('pi_k1', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778089162/new-wardrobe/media/nq8fyzk63eyhezeln4y5.jpg', 'maride-1.jpg', 1),
+('pi_k2', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778087956/new-wardrobe/media/wa5omufdbgkf1anu70nx.jpg', 'maride-1.jpg', 2),
+('pi_k3', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778073738/new-wardrobe/media/mneavyjrv61voee1xlz1.jpg', 'maride-1.jpg', 3),
+('pi_k4', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778073504/new-wardrobe/media/hmahbopbvphqhtcrxyns.jpg', 'maride-1.jpg', 4),
+('pi_k5', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778072854/new-wardrobe/media/fiurwfpgfy6fjeiiwnyu.jpg', 'maride-1.jpg', 5),
+('pi_k6', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778072834/new-wardrobe/media/pv62trwlvmo48ircwyz1.jpg', 'maride-1.jpg', 6),
+('pi_k7', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778071692/new-wardrobe/media/ouncewsekhosfovo805n.jpg', 'maride-1.jpg', 7),
+('pi_k8', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778056491/new-wardrobe/media/ikbfybhdzbisetbbeduc.jpg', 'maride-1.jpg', 8),
+('pi_k9', 'cmotswd8e00017kf1r4v9bapr', 'https://res.cloudinary.com/djghexldz/image/upload/v1778056408/new-wardrobe/media/urqjb9ksrdkqtva3dcbn.jpg', 'maride-1.jpg', 9);

@@ -118,7 +118,7 @@ model ContentSection {
   sectionKey String   @unique
   title      String?
   subtitle   String?  @db.Text
-  body       String?  @db.LongText
+  body       String?  @db.Text
   imageUrl   String?
   metadata   String?  @db.Text
   updatedAt  DateTime @updatedAt
@@ -184,7 +184,7 @@ model RoomConfiguration {
   roomWidth   Float
   roomHeight  Float
   roomDepth   Float
-  objects     String   @db.LongText
+  objects     String   @db.Text
   cameraState String?  @db.Text
   shareToken  String?  @unique
   createdAt   DateTime @default(now())
@@ -195,7 +195,7 @@ model RoomConfiguration {
 model SiteSetting {
   id        String   @id @default(cuid())
   key       String   @unique
-  value     String   @db.LongText
+  value     String   @db.Text
   type      String   @default("text")   // text | textarea | image | color | boolean | json
   label     String
   group     String   @default("general")

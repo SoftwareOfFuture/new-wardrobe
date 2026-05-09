@@ -4,11 +4,14 @@ import { Pool } from "pg";
 
 function createPrismaClient() {
   const connectionString =
-    process.env.POSTGRES_PRISMA_URL ?? // Vercel Postgres (pgbouncer pooled)
-    process.env.DATABASE_URL ??
+    process.env.POSTGRES_PRISMA_URL?.trim() ?? // Vercel Postgres (pgbouncer pooled)
+    process.env.POSTGRES_URL_NON_POOLING?.trim() ??
+    process.env.POSTGRES_URL?.trim() ??
+    process.env.PRISMA_DATABASE_URL?.trim() ??
+    process.env.DATABASE_URL?.trim() ??
     "";
 
-  const pool = new Pool({ connectionString, max: 10 });
+  const pool = new Pool({ connectionString: connectionString || undefined, max: 10 });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }

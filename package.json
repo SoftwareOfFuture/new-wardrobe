@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:restore-legacy": "npx tsx scripts/restore-legacy-data.ts",
     "db:studio": "npx prisma studio",
     "db:generate": "npx prisma generate"
   },

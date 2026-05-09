@@ -17,21 +17,26 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    try {
+      const formData = new FormData(e.currentTarget);
 
-    const formData = new FormData(e.currentTarget);
+      const result = await signIn("credentials", {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        redirect: false,
+      });
 
-    const result = await signIn("credentials", {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      redirect: false,
-    });
+      if (!result || result.error) {
+        setError("Geçersiz e-posta veya şifre");
+        return;
+      }
 
-    if (result?.error) {
-      setError("Geçersiz e-posta veya şifre");
-      setLoading(false);
-    } else {
       router.push("/admin");
       router.refresh();
+    } catch {
+      setError("Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
     }
   }
 

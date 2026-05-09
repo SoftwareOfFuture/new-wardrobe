@@ -2,7 +2,13 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
+const authSecret =
+  process.env.AUTH_SECRET?.trim() ||
+  process.env.NEXTAUTH_SECRET?.trim() ||
+  process.env.NEXT_AUTH_SECRET?.trim();
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  secret: authSecret || undefined,
   providers: [
     Credentials({
       name: "credentials",

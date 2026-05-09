@@ -9,7 +9,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   let name = "Proje";
   try {
-    const p = await prisma.project.findUnique({ where: { slug }, select: { name: true } });
+    const p =
+      (await prisma.project.findUnique({ where: { slug }, select: { name: true } })) ??
+      (await prisma.product.findFirst({
+        where: { slug, published: true, isProject: true },
+        select: { name: true },
+      }));
     if (p) name = p.name;
   } catch { /* */ }
   return { title: `${name} | Projelerimiz | Urban Mobilya` };
@@ -27,12 +32,36 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   } | null = null;
 
   try {
-    const raw = await prisma.project.findUnique({
+    const rawProject = await prisma.project.findUnique({
       where: { slug },
       include: { images: { orderBy: { order: "asc" } } },
     });
-    if (!raw) return notFound();
-    project = raw;
+
+    if (rawProject) {
+      project = rawProject;
+    } else {
+      const rawProduct = await prisma.product.findFirst({
+        where: { slug, published: true, isProject: true },
+        include: {
+          images: { orderBy: { order: "asc" } },
+          category: { select: { name: true } },
+        },
+      });
+      if (!rawProduct) return notFound();
+
+      project = {
+        id: rawProduct.id,
+        name: rawProduct.name,
+        description: rawProduct.description,
+        category: rawProduct.category?.name ?? null,
+        images: rawProduct.images.map((img) => ({
+          id: img.id,
+          url: img.url,
+          alt: img.alt ?? null,
+          order: img.order,
+        })),
+      };
+    }
   } catch {
     return notFound();
   }

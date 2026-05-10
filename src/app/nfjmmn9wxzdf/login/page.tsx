@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push("/admin");
+      router.push("/nfjmmn9wxzdf");
       router.refresh();
     } catch {
       setError("Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.");

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import { DashboardStats } from "@/components/admin/DashboardStats";
 
 export default async function AdminDashboardPage() {
@@ -44,7 +44,7 @@ export default async function AdminDashboardPage() {
           <h2 className="text-lg font-semibold mb-4">Son Eklenen Ürünler</h2>
           <p className="text-sm text-muted-foreground">
             Henüz ürün eklenmemiş. Ürün eklemek için{" "}
-            <a href="/admin/urunler/yeni" className="text-primary underline">
+            <a href="/nfjmmn9wxzdf/urunler/yeni" className="text-primary underline">
               buraya tıklayın
             </a>
             .
@@ -55,21 +55,21 @@ export default async function AdminDashboardPage() {
           <h2 className="text-lg font-semibold mb-4">Hızlı İşlemler</h2>
           <div className="space-y-2">
             <a
-              href="/admin/urunler/yeni"
+              href="/nfjmmn9wxzdf/urunler/yeni"
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors"
             >
               <span className="text-primary">+</span>
               <span className="text-sm">Yeni Ürün Ekle</span>
             </a>
             <a
-              href="/admin/kategoriler"
+              href="/nfjmmn9wxzdf/kategoriler"
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors"
             >
               <span className="text-primary">+</span>
               <span className="text-sm">Kategori Yönet</span>
             </a>
             <a
-              href="/admin/icerik"
+              href="/nfjmmn9wxzdf/icerik"
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors"
             >
               <span className="text-primary">✎</span>

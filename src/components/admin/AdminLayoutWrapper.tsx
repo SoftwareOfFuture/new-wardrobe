@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -12,7 +12,7 @@ interface AdminLayoutWrapperProps {
 
 export function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/admin/login";
+  const isLoginPage = pathname === "/nfjmmn9wxzdf/login";
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Auto-close drawer on route change
@@ -59,7 +59,7 @@ export function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <Link href="/admin" className="text-base font-bold text-gradient-gold">
+          <Link href="/nfjmmn9wxzdf" className="text-base font-bold text-gradient-gold">
             URBAN MOBİLYA
           </Link>
         </div>

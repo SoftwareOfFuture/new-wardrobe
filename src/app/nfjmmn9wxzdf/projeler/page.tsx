@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Plus, Images } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ export default async function ProjectsAdminPage() {
           <h1 className="text-3xl font-bold">Projeler</h1>
           <p className="text-muted-foreground mt-1">{projects.length} proje</p>
         </div>
-        <Link href="/admin/projeler/yeni">
+        <Link href="/nfjmmn9wxzdf/projeler/yeni">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
             Yeni Proje

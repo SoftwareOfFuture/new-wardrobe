@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +36,7 @@ export default async function AdminProductsPage() {
             {products.length} ürün listeleniyor
           </p>
         </div>
-        <Link href="/admin/urunler/yeni">
+        <Link href="/nfjmmn9wxzdf/urunler/yeni">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
             Yeni Ürün
@@ -51,7 +51,7 @@ export default async function AdminProductsPage() {
           <p className="text-muted-foreground mt-1">
             İlk ürününüzü ekleyerek başlayın
           </p>
-          <Link href="/admin/urunler/yeni">
+          <Link href="/nfjmmn9wxzdf/urunler/yeni">
             <Button className="mt-4">
               <Plus className="w-4 h-4 mr-2" />
               Ürün Ekle
@@ -92,7 +92,7 @@ export default async function AdminProductsPage() {
                 >
                   <td className="px-3 py-3 sm:px-4 sm:py-4">
                     <Link
-                      href={`/admin/urunler/${product.id}`}
+                      href={`/nfjmmn9wxzdf/urunler/${product.id}`}
                       className="flex items-center gap-2 sm:gap-3 hover:text-primary transition-colors"
                     >
                       {product.images[0] ? (

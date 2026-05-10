@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/admin/login") {
+  if (pathname === "/nfjmmn9wxzdf/login") {
     return NextResponse.next();
   }
 
@@ -13,12 +13,12 @@ export async function middleware(request: NextRequest) {
     request.cookies.has("authjs.session-token");
 
   if (!hasSessionToken) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    return NextResponse.redirect(new URL("/nfjmmn9wxzdf/login", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/nfjmmn9wxzdf/:path*"],
 };

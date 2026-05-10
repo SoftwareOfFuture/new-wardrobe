@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+﻿import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
@@ -46,12 +46,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   session: { strategy: "jwt" },
   pages: {
-    signIn: "/admin/login",
+    signIn: "/nfjmmn9wxzdf/login",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isLoginPage = nextUrl.pathname === "/admin/login";
+      const isLoginPage = nextUrl.pathname === "/nfjmmn9wxzdf/login";
       if (!isLoginPage && !isLoggedIn) return false;
       return true;
     },

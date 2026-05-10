@@ -57,7 +57,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       const res = await fetch(`/api/projects/${initialData.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Silinemedi");
       toast.success("Proje silindi");
-      router.push("/admin/projeler");
+      router.push("/nfjmmn9wxzdf/projeler");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Silme hatası");
@@ -108,7 +108,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       const response = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       if (!response.ok) throw new Error("Bir hata oluştu");
       toast.success(initialData ? "Proje güncellendi" : "Proje oluşturuldu");
-      router.push("/admin/projeler");
+      router.push("/nfjmmn9wxzdf/projeler");
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Bir hata oluştu");

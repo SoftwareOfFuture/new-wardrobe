@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -63,7 +63,7 @@ export function ProjectActions({ projectId, projectName }: ProjectActionsProps) 
 
   return (
     <div className="flex items-center gap-1 justify-end">
-      <Link href={`/admin/projeler/${projectId}`}>
+      <Link href={`/nfjmmn9wxzdf/projeler/${projectId}`}>
         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
           <Edit className="w-4 h-4" />
         </Button>

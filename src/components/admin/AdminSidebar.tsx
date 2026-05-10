@@ -104,7 +104,7 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
         <button
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all cursor-pointer"
           onClick={async () => {
-            await signOut({ callbackUrl: `/${ADMIN_PATH}/login` });
+            await signOut({ callbackUrl: `${window.location.origin}/${ADMIN_PATH}/login` });
           }}
         >
           <LogOut className="w-4 h-4 shrink-0" />

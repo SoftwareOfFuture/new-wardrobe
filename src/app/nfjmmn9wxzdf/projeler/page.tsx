@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Plus, Images } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectActions } from "@/components/admin/ProjectActions";
+import { ADMIN_PATH } from "@/lib/admin-config";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,7 @@ export default async function ProjectsAdminPage() {
           <h1 className="text-3xl font-bold">Projeler</h1>
           <p className="text-muted-foreground mt-1">{projects.length} proje</p>
         </div>
-        <Link href="/nfjmmn9wxzdf/projeler/yeni">
+        <Link href={`/${ADMIN_PATH}/projeler/yeni`}>
           <Button>
             <Plus className="w-4 h-4 mr-2" />
             Yeni Proje

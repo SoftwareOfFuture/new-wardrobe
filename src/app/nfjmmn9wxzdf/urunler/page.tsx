@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Package } from "lucide-react";
 import { ProductActions } from "@/components/admin/ProductActions";
+import { ADMIN_PATH } from "@/lib/admin-config";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,7 @@ export default async function AdminProductsPage() {
             {products.length} ürün listeleniyor
           </p>
         </div>
-        <Link href="/nfjmmn9wxzdf/urunler/yeni">
+        <Link href={`/${ADMIN_PATH}/urunler/yeni`}>
           <Button>
             <Plus className="w-4 h-4 mr-2" />
             Yeni Ürün
@@ -51,7 +52,7 @@ export default async function AdminProductsPage() {
           <p className="text-muted-foreground mt-1">
             İlk ürününüzü ekleyerek başlayın
           </p>
-          <Link href="/nfjmmn9wxzdf/urunler/yeni">
+          <Link href={`/${ADMIN_PATH}/urunler/yeni`}>
             <Button className="mt-4">
               <Plus className="w-4 h-4 mr-2" />
               Ürün Ekle
@@ -92,7 +93,7 @@ export default async function AdminProductsPage() {
                 >
                   <td className="px-3 py-3 sm:px-4 sm:py-4">
                     <Link
-                      href={`/nfjmmn9wxzdf/urunler/${product.id}`}
+                      href={`/${ADMIN_PATH}/urunler/${product.id}`}
                       className="flex items-center gap-2 sm:gap-3 hover:text-primary transition-colors"
                     >
                       {product.images[0] ? (

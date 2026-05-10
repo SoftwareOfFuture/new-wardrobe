@@ -1,5 +1,7 @@
-﻿import { prisma } from "@/lib/db";
+﻿import Link from "next/link";
+import { prisma } from "@/lib/db";
 import { DashboardStats } from "@/components/admin/DashboardStats";
+import { ADMIN_PATH } from "@/lib/admin-config";
 
 export default async function AdminDashboardPage() {
   let stats = {
@@ -44,9 +46,9 @@ export default async function AdminDashboardPage() {
           <h2 className="text-lg font-semibold mb-4">Son Eklenen Ürünler</h2>
           <p className="text-sm text-muted-foreground">
             Henüz ürün eklenmemiş. Ürün eklemek için{" "}
-            <a href="/nfjmmn9wxzdf/urunler/yeni" className="text-primary underline">
+            <Link href={`/${ADMIN_PATH}/urunler/yeni`} className="text-primary underline">
               buraya tıklayın
-            </a>
+            </Link>
             .
           </p>
         </div>
@@ -54,27 +56,27 @@ export default async function AdminDashboardPage() {
         <div className="glass rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Hızlı İşlemler</h2>
           <div className="space-y-2">
-            <a
-              href="/nfjmmn9wxzdf/urunler/yeni"
+            <Link
+              href={`/${ADMIN_PATH}/urunler/yeni`}
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors"
             >
               <span className="text-primary">+</span>
               <span className="text-sm">Yeni Ürün Ekle</span>
-            </a>
-            <a
-              href="/nfjmmn9wxzdf/kategoriler"
+            </Link>
+            <Link
+              href={`/${ADMIN_PATH}/kategoriler`}
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors"
             >
               <span className="text-primary">+</span>
               <span className="text-sm">Kategori Yönet</span>
-            </a>
-            <a
-              href="/nfjmmn9wxzdf/icerik"
+            </Link>
+            <Link
+              href={`/${ADMIN_PATH}/icerik`}
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors"
             >
               <span className="text-primary">✎</span>
               <span className="text-sm">İçerik Düzenle</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

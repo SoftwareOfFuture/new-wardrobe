@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ADMIN_PATH } from "@/lib/admin-config";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -109,7 +110,7 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
       const res = await fetch(`/api/products/${initialData.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Silinemedi");
       toast.success("Ürün silindi");
-      router.push("/nfjmmn9wxzdf/urunler");
+      router.push(`/${ADMIN_PATH}/urunler`);
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Silme hatası");
@@ -288,7 +289,7 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
       toast.success(
         initialData ? "Ürün güncellendi" : "Ürün oluşturuldu"
       );
-      router.push("/nfjmmn9wxzdf/urunler");
+      router.push(`/${ADMIN_PATH}/urunler`);
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Bir hata oluştu");

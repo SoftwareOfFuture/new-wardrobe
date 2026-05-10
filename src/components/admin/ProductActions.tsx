@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
+import { ADMIN_PATH } from "@/lib/admin-config";
 import { useRouter } from "next/navigation";
 import { Edit, Trash2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -63,7 +64,7 @@ export function ProductActions({ productId, productName }: ProductActionsProps) 
 
   return (
     <div className="flex items-center gap-1 justify-end">
-      <Link href={`/nfjmmn9wxzdf/urunler/${productId}`}>
+      <Link href={`/${ADMIN_PATH}/urunler/${productId}`}>
         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
           <Edit className="w-4 h-4" />
         </Button>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ADMIN_PATH } from "@/lib/admin-config";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -31,7 +32,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push("/nfjmmn9wxzdf");
+      router.push(`/${ADMIN_PATH}`);
       router.refresh();
     } catch {
       setError("Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.");

@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
+import { ADMIN_PATH } from "@/lib/admin-config";
 import { useRouter } from "next/navigation";
 import { Edit, Trash2, Loader2, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -63,7 +64,7 @@ export function ProjectActions({ projectId, projectName }: ProjectActionsProps) 
 
   return (
     <div className="flex items-center gap-1 justify-end">
-      <Link href={`/nfjmmn9wxzdf/projeler/${projectId}`}>
+      <Link href={`/${ADMIN_PATH}/projeler/${projectId}`}>
         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
           <Edit className="w-4 h-4" />
         </Button>

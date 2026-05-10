@@ -18,15 +18,16 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { ADMIN_PATH } from "@/lib/admin-config";
 
 const navItems = [
-  { href: "/nfjmmn9wxzdf",             label: "Dashboard",       icon: LayoutDashboard },
-  { href: "/nfjmmn9wxzdf/urunler",     label: "Ürünler",         icon: Package },
-  { href: "/nfjmmn9wxzdf/projeler",    label: "Projeler",        icon: Building2 },
-  { href: "/nfjmmn9wxzdf/kategoriler", label: "Kategoriler",     icon: FolderTree },
-  { href: "/nfjmmn9wxzdf/icerik",      label: "İçerik Yönetimi", icon: FileText },
-  { href: "/nfjmmn9wxzdf/medya",       label: "Medya",           icon: Image },
-  { href: "/nfjmmn9wxzdf/ayarlar",     label: "Ayarlar",         icon: Settings },
+  { href: `/${ADMIN_PATH}`,               label: "Dashboard",       icon: LayoutDashboard },
+  { href: `/${ADMIN_PATH}/urunler`,       label: "Ürünler",         icon: Package },
+  { href: `/${ADMIN_PATH}/projeler`,      label: "Projeler",        icon: Building2 },
+  { href: `/${ADMIN_PATH}/kategoriler`,   label: "Kategoriler",     icon: FolderTree },
+  { href: `/${ADMIN_PATH}/icerik`,        label: "İçerik Yönetimi", icon: FileText },
+  { href: `/${ADMIN_PATH}/medya`,         label: "Medya",           icon: Image },
+  { href: `/${ADMIN_PATH}/ayarlar`,       label: "Ayarlar",         icon: Settings },
 ];
 
 interface AdminSidebarProps {
@@ -51,7 +52,7 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
       <div className="flex items-center justify-between p-4 border-b border-border shrink-0">
         {(!collapsed || isMobile) && (
           <Link
-            href="/nfjmmn9wxzdf"
+            href={`/${ADMIN_PATH}`}
             className="text-lg font-bold text-gradient-gold"
             onClick={onClose}
           >
@@ -78,7 +79,7 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
         {navItems.map((item) => {
           const isActive =
             pathname === item.href ||
-            (item.href !== "/nfjmmn9wxzdf" && pathname.startsWith(item.href));
+            (item.href !== `/${ADMIN_PATH}` && pathname.startsWith(item.href));
           return (
             <Link
               key={item.href}
@@ -103,7 +104,7 @@ export function AdminSidebar({ onClose }: AdminSidebarProps) {
         <button
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all cursor-pointer"
           onClick={async () => {
-            await signOut({ callbackUrl: "/nfjmmn9wxzdf/login" });
+            await signOut({ callbackUrl: `/${ADMIN_PATH}/login` });
           }}
         >
           <LogOut className="w-4 h-4 shrink-0" />

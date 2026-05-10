@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { AdminSidebar } from "./AdminSidebar";
+import { ADMIN_PATH } from "@/lib/admin-config";
 
 interface AdminLayoutWrapperProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ interface AdminLayoutWrapperProps {
 
 export function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
   const pathname = usePathname();
-  const isLoginPage = pathname === "/nfjmmn9wxzdf/login";
+  const isLoginPage = pathname === `/${ADMIN_PATH}/login`;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Auto-close drawer on route change
@@ -59,7 +60,7 @@ export function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <Link href="/nfjmmn9wxzdf" className="text-base font-bold text-gradient-gold">
+          <Link href={`/${ADMIN_PATH}`} className="text-base font-bold text-gradient-gold">
             URBAN MOBİLYA
           </Link>
         </div>

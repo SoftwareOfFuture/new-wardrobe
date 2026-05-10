@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { getSettings } from "@/lib/settings";
 import { ScrollReveal } from "@/components/storefront/ScrollReveal";
 import { ContactForm } from "@/components/storefront/ContactForm";
@@ -29,7 +29,7 @@ export default async function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 relative overflow-hidden">
+    <div className="min-h-screen pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-30"
@@ -40,12 +40,12 @@ export default async function ContactPage() {
 
       <div className="max-w-6xl mx-auto relative">
         {/* Header */}
-        <ScrollReveal className="text-center mb-20">
+        <ScrollReveal className="text-center mb-12 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase mb-6"
             style={{ background: "rgba(212,168,83,0.08)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}>
             Bize Ulaşın
           </div>
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight">
             <span className="text-gradient-gold">{pageTitle}</span>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
@@ -62,7 +62,7 @@ export default async function ContactPage() {
                   <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined}
                     rel="noopener noreferrer"
                     className="group flex items-start gap-4 p-5 rounded-2xl transition-all duration-300 hover:glow-gold-subtle cursor-pointer"
-                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,168,83,0.15)" }}>
                     <div className="p-3 rounded-xl shrink-0 transition-colors group-hover:bg-primary/20"
                       style={{ background: "rgba(212,168,83,0.1)" }}>
                       <item.icon className="w-5 h-5" style={{ color: "#D4A853" }} />
@@ -77,7 +77,7 @@ export default async function ContactPage() {
                   </a>
                 ) : (
                   <div className="flex items-start gap-4 p-5 rounded-2xl"
-                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,168,83,0.15)" }}>
                     <div className="p-3 rounded-xl shrink-0" style={{ background: "rgba(212,168,83,0.1)" }}>
                       <item.icon className="w-5 h-5" style={{ color: "#D4A853" }} />
                     </div>

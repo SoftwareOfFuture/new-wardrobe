@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -235,6 +235,15 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
 
+  /* Hide scrollbar but keep scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Gold divider line */
   .divider-gold {
     height: 1px;
@@ -293,7 +302,7 @@
   }
   .card-hover:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 4px 20px rgba(212,168,83,0.08);
+    box-shadow: 0 20px 60px rgba(212,168,83,0.12), 0 4px 20px rgba(212,168,83,0.08);
   }
 
   /* ── Gold dot list ── */
@@ -330,10 +339,10 @@
 
   /* ── Blurred card bg ── */
   .frosted {
-    background: rgba(255,255,255,0.025);
+    background: rgba(9,9,11,0.70);
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,168,83,0.12);
   }
 
   /* ── Gold top border accent ── */
@@ -375,9 +384,9 @@
 
   /* ── Footer social link ── */
   .footer-social-link {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.5);
+    background: rgba(212,168,83,0.06);
+    border: 1px solid rgba(212,168,83,0.15);
+    color: rgba(212,168,83,0.65);
   }
   .footer-social-link:hover {
     border-color: rgba(212,168,83,0.4);
@@ -401,6 +410,22 @@
 @keyframes shimmer-pass {
   from { transform: translateX(-100%) skewX(-12deg); }
   to   { transform: translateX(200%) skewX(-12deg); }
+}
+
+/* ─── Mobile optimizations ──────────────────────── */
+@media (max-width: 640px) {
+  /* Prevent text from being too small on mobile */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* Safe area for notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+  footer {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 2rem);
+  }
 }
 
 /* ─── Reduced motion ────────────────────────────── */

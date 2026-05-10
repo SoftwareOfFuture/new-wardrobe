@@ -88,6 +88,8 @@ function slugify(text: string): string {
 export function ProductForm({ categories, initialData }: ProductFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [name, setName] = useState(initialData?.name || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [images, setImages] = useState<ProductImage[]>(
@@ -99,6 +101,21 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
   );
   const [converting, setConverting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleDelete() {
+    if (!initialData) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/products/${initialData.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Silinemedi");
+      toast.success("Ürün silindi");
+      router.push("/admin/urunler");
+      router.refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Silme hatası");
+      setDeleting(false);
+    }
+  }
 
   // ── Color variants ──────────────────────────────────
   const [colorVariants, setColorVariants] = useState<ColorVariant[]>(
@@ -599,7 +616,7 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
             <Palette className="w-4 h-4" />
             Renk Seçenekleri
             <span className="text-xs font-normal text-muted-foreground ml-1">
-              (Oda Planlayıcıda görünür)
+              (Urban Creative'de görünür)
             </span>
           </h2>
 
@@ -681,13 +698,35 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
 
           {colorVariants.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              Henüz renk eklenmedi. Renk seçenekleri oda planlayıcıda kullanıcıların ürün rengini değiştirmesini sağlar.
+              Henüz renk eklenmedi. Renk seçenekleri Urban Creative'de kullanıcıların ürün rengini değiştirmesini sağlar.
             </p>
           )}
         </div>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between">
+        {initialData && (
+          <div className="flex items-center gap-2">
+            {showDeleteConfirm ? (
+              <>
+                <span className="text-sm text-destructive font-medium">Bu ürün silinecek!</span>
+                <Button type="button" variant="destructive" size="sm" onClick={handleDelete} disabled={deleting}>
+                  {deleting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Trash2 className="w-4 h-4 mr-1" />}
+                  Evet, Sil
+                </Button>
+                <Button type="button" variant="ghost" size="sm" onClick={() => setShowDeleteConfirm(false)} disabled={deleting}>
+                  Vazgeç
+                </Button>
+              </>
+            ) : (
+              <Button type="button" variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => setShowDeleteConfirm(true)}>
+                <Trash2 className="w-4 h-4 mr-1" />
+                Ürünü Sil
+              </Button>
+            )}
+          </div>
+        )}
+        {!initialData && <div />}
         <Button type="submit" disabled={loading} size="lg">
           {loading ? (
             <Loader2 className="w-4 h-4 mr-2 animate-spin" />

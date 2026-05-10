@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
               <Lock className="w-6 h-6 text-primary" />
             </div>
             <h1 className="text-2xl font-bold text-gradient-gold">
-              Admin Panel
+              Urban Mobilya
             </h1>
             <p className="text-sm text-muted-foreground">
               Yönetim paneline giriş yapın
@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="admin@newwardrobe.com"
+                placeholder="admin@urbanmobilya.com"
                 required
                 className="bg-background/50"
               />
@@ -76,6 +76,7 @@ export default function AdminLoginPage() {
                 type="password"
                 placeholder="••••••••"
                 required
+                minLength={4}
                 className="bg-background/50"
               />
             </div>

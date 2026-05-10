@@ -1,8 +1,16 @@
-import type { Metadata } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { getSettings } from "@/lib/settings";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#09090b",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,9 +24,9 @@ const geistMono = Geist_Mono({
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
-  const title = settings["seo.title"] || "NEW WARDROBE | Premium Mobilya";
-  const description = settings["seo.description"] || "Premium mobilya ve gardırop çözümleri.";
-  const siteName = settings["site.name"] || "NEW WARDROBE";
+  const title = settings["seo.title"] || "Urban Mobilya | Otel Mobilya Üretimi";
+  const description = settings["seo.description"] || "Otel mobilya üretiminde uzman çözümler. Misafir odalarından lobilere özel üretim.";
+  const siteName = settings["site.name"] || "Urban Mobilya";
   const ogImage = settings["seo.og_image"] || undefined;
 
   return {

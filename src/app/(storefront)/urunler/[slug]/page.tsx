@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -78,7 +78,7 @@ export default async function ProductDetailPage({
           style={{ background: "radial-gradient(circle, #D4A853 0%, transparent 70%)" }} />
       </div>
 
-      <div className="pt-32 px-6">
+      <div className="pt-28 sm:pt-32 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
 
           {/* Breadcrumb */}
@@ -101,7 +101,7 @@ export default async function ProductDetailPage({
             </nav>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 xl:gap-20 mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 xl:gap-20 mb-14 sm:mb-20">
 
             {/* Left: Gallery */}
             <ScrollReveal>
@@ -142,7 +142,7 @@ export default async function ProductDetailPage({
 
                 {/* Name */}
                 <div>
-                  <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold tracking-tight leading-tight">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight leading-tight">
                     {product.name}
                   </h1>
                   {product.sku && (
@@ -233,14 +233,14 @@ export default async function ProductDetailPage({
                 </div>
 
                 {/* Trust badges */}
-                <div className="flex items-center gap-6 pt-2">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-6 pt-2">
                   {[
                     { label: "Ücretsiz Keşif" },
                     { label: "Fabrika Garantisi" },
                     { label: "Hızlı Teslimat" },
                   ].map(({ label }) => (
                     <div key={label} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#D4A853" }} />
+                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#D4A853" }} />
                       {label}
                     </div>
                   ))}

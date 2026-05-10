@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { getSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { ScrollReveal } from "@/components/storefront/ScrollReveal";
@@ -44,7 +44,7 @@ export default async function ProjectsPage() {
   const categories = [...new Set(projects.map((p) => p.category).filter(Boolean))];
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 relative overflow-hidden">
+    <div className="min-h-screen pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -57,7 +57,7 @@ export default async function ProjectsPage() {
         {/* Header */}
         <ScrollReveal className="text-center mb-6">
           <div className="badge-gold mb-6">Referans Çalışmalar</div>
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-5">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-5">
             <span className="text-gradient-gold">Projelerimiz</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -68,9 +68,9 @@ export default async function ProjectsPage() {
         {/* Quick stats bar */}
         {projects.length > 0 && (
           <ScrollReveal delay={0.1}>
-            <div className="flex items-center justify-center gap-8 py-8 mb-14">
-              <div className="divider-gold flex-1 max-w-32" />
-              <div className="flex items-center gap-8 text-center">
+            <div className="flex items-center justify-center gap-4 sm:gap-8 py-6 sm:py-8 mb-10 sm:mb-14">
+              <div className="divider-gold flex-1 max-w-16 sm:max-w-32" />
+              <div className="flex items-center gap-4 sm:gap-8 text-center">
                 <div>
                   <p className="text-2xl font-bold text-gradient-gold">{projects.length}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">Proje</p>
@@ -92,7 +92,7 @@ export default async function ProjectsPage() {
                   </>
                 )}
               </div>
-              <div className="divider-gold flex-1 max-w-32" />
+              <div className="divider-gold flex-1 max-w-16 sm:max-w-32" />
             </div>
           </ScrollReveal>
         )}

@@ -78,7 +78,7 @@ export default function SettingsPage() {
   const groups = GROUP_ORDER.filter((g) => grouped[g]);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Site Ayarları</h1>
@@ -107,16 +107,16 @@ export default function SettingsPage() {
           <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
         </div>
       ) : (
-        <div className="flex gap-4">
-          {/* Sidebar tabs */}
-          <nav className="flex flex-col gap-1 w-48 shrink-0">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* Sidebar tabs — horizontal scroll on mobile, vertical on sm+ */}
+          <nav className="flex sm:flex-col gap-1 sm:w-48 sm:shrink-0 overflow-x-auto sm:overflow-x-visible pb-1 sm:pb-0 scrollbar-hide">
             {groups.map((g) => {
               const meta = GROUP_META[g] ?? { label: g, icon: null };
               return (
                 <button
                   key={g}
                   onClick={() => setActiveGroup(g)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors whitespace-nowrap shrink-0 sm:w-full ${
                     activeGroup === g
                       ? "bg-amber-500/20 text-amber-400 font-medium"
                       : "hover:bg-zinc-800 text-zinc-400"

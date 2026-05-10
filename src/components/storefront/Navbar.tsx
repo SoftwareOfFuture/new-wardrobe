@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
@@ -17,14 +17,15 @@ interface NavbarProps {
 
 const DEFAULT_LINKS = [
   { href: "/", label: "Ana Sayfa" },
-  { href: "/projelerimiz", label: "Projelerimiz" },
   { href: "/urunler", label: "Ürünler" },
+  { href: "/projelerimiz", label: "Projelerimiz" },
+  { href: "/oda-planlayici", label: "Urban Creative" },
   { href: "/hakkimizda", label: "Hakkımızda" },
   { href: "/iletisim", label: "İletişim" },
 ];
 
 export function Navbar({
-  brand = "NEW WARDROBE",
+  brand = "URBAN MOBİLYA",
   links = DEFAULT_LINKS,
   ctaLabel = "Teklif Al",
   ctaHref = "/iletisim",
@@ -87,7 +88,7 @@ export function Navbar({
           background: "rgba(9,9,11,0.85)",
           backdropFilter: "blur(24px) saturate(180%)",
           WebkitBackdropFilter: "blur(24px) saturate(180%)",
-          borderColor: "rgba(255,255,255,0.07)",
+          borderColor: "rgba(212,168,83,0.12)",
         } : {}}
       >
         {/* Scroll progress bar */}
@@ -100,7 +101,7 @@ export function Navbar({
           }}
         />
 
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4 sm:gap-8">
 
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-0 shrink-0">
@@ -116,7 +117,7 @@ export function Navbar({
               {brandFirst}
             </span>
             {brandRest && (
-              <span className="text-base font-black tracking-[0.18em] uppercase text-white/90 ml-1.5">
+              <span className="text-base font-black tracking-[0.18em] uppercase ml-1.5" style={{ color: "rgba(255,255,255,0.85)" }}>
                 {brandRest}
               </span>
             )}
@@ -133,8 +134,8 @@ export function Navbar({
                   className={cn(
                     "relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                     active
-                      ? "text-white"
-                      : "text-white/50 hover:text-white/85"
+                      ? "text-primary"
+                      : "hover:text-primary"
                   )}
                 >
                   {active && (
@@ -179,7 +180,7 @@ export function Navbar({
 
             <button
               className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl transition-all cursor-pointer"
-              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}
+              style={{ background: "rgba(212,168,83,0.10)", border: "1px solid rgba(212,168,83,0.15)" }}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Menü"
             >
@@ -234,13 +235,13 @@ export function Navbar({
                     >
                       <Link
                         href={link.href}
-                        className="flex items-center justify-between py-4 group border-b"
-                        style={{ borderColor: "rgba(255,255,255,0.05)" }}
+                        className="flex items-center justify-between py-3.5 sm:py-4 group border-b"
+                        style={{ borderColor: "rgba(212,168,83,0.15)" }}
                       >
                         <span className={cn(
-                          "text-3xl font-bold tracking-tight transition-colors",
-                          active ? "text-gradient-gold" : "text-white/60 group-hover:text-white"
-                        )}>
+                          "text-2xl sm:text-3xl font-bold tracking-tight transition-colors",
+                          active ? "text-gradient-gold" : "group-hover:text-primary"
+                        )} style={active ? {} : { color: "rgba(255,255,255,0.7)" }}>
                           {link.label}
                         </span>
                         <ChevronRight className={cn(

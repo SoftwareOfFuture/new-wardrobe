@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useState } from "react";
@@ -44,14 +44,14 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           <>
             <button
               onClick={() => setActiveIndex((i) => (i - 1 + images.length) % images.length)}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer hover:scale-110"
+              className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 opacity-80 transition-all duration-300 cursor-pointer hover:scale-110"
               style={{ background: "rgba(9,9,11,0.75)", border: "1px solid rgba(255,255,255,0.1)" }}
             >
               <ChevronLeft className="w-4 h-4 text-white" />
             </button>
             <button
               onClick={() => setActiveIndex((i) => (i + 1) % images.length)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer hover:scale-110"
+              className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 opacity-80 transition-all duration-300 cursor-pointer hover:scale-110"
               style={{ background: "rgba(9,9,11,0.75)", border: "1px solid rgba(255,255,255,0.1)" }}
             >
               <ChevronRight className="w-4 h-4 text-white" />
@@ -78,7 +78,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
 
       {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
           {images.map((img, i) => (
             <button
               key={img.id}

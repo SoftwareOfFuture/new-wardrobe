@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useRef } from "react";
@@ -53,11 +53,11 @@ export function CTASection({
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-28 px-6 relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
       <div className="max-w-5xl mx-auto">
         <div
           ref={contentRef}
-          className="relative rounded-3xl overflow-hidden p-10 sm:p-16 lg:p-20"
+          className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-6 sm:p-12 lg:p-20"
         >
           {/* BG layers */}
           <div className="absolute inset-0"
@@ -103,7 +103,7 @@ export function CTASection({
               Ücretsiz Keşif
             </motion.div>
 
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
               <span className="text-gradient-gold">{title.split(" ").slice(0, 3).join(" ")}</span>
               {title.split(" ").length > 3 && (
                 <>
@@ -113,7 +113,7 @@ export function CTASection({
               )}
             </h2>
 
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed mb-12">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed mb-8 sm:mb-12">
               {subtitle}
             </p>
 
@@ -135,8 +135,9 @@ export function CTASection({
                 href="/projelerimiz"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 hover:border-primary/30"
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "rgba(212,168,83,0.06)",
+                  border: "1px solid rgba(212,168,83,0.18)",
+                  color: "#6B4A35",
                 }}
               >
                 Projelerimizi Gör

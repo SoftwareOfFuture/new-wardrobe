@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -19,9 +19,9 @@ const showcaseItems = [
   },
   {
     icon: Layers3,
-    title: "Oda Planlayıcı",
+    title: "Urban Creative",
     description:
-      "IKEA tarzı sürükle-bırak ile odanızı sanal ortamda tasarlayın. Gerçek boyutlar, gerçek hisler.",
+      "Sürükle-bırak ile odanızı sanal ortamda tasarlayın. Gerçek boyutlar, gerçek hisler.",
     tag: "Araçlar",
   },
   {
@@ -94,7 +94,7 @@ export function ShowcaseSection() {
   );
 
   return (
-    <section ref={containerRef} className="py-32 px-6 relative overflow-hidden">
+    <section ref={containerRef} className="py-16 sm:py-24 lg:py-32 px-4 sm:px-6 relative overflow-hidden">
       {/* Center vertical line */}
       <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 pointer-events-none overflow-hidden hidden lg:block">
         <div
@@ -104,7 +104,7 @@ export function ShowcaseSection() {
       </div>
 
       {/* Section header */}
-      <div className="max-w-5xl mx-auto text-center mb-20">
+      <div className="max-w-5xl mx-auto text-center mb-12 sm:mb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -121,18 +121,18 @@ export function ShowcaseSection() {
           >
             Özelliklerimiz
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
             Mobilya Alışverişini{" "}
             <span className="text-gradient-gold">Yeniden Keşfedin</span>
           </h2>
         </motion.div>
       </div>
 
-      <div className="max-w-5xl mx-auto space-y-28">
+      <div className="max-w-5xl mx-auto space-y-14 sm:space-y-20 lg:space-y-28">
         {showcaseItems.map((item, i) => (
           <div
             key={item.title}
-            className={`showcase-card flex flex-col lg:flex-row items-center gap-12 ${
+            className={`showcase-card flex flex-col lg:flex-row items-center gap-6 sm:gap-8 lg:gap-12 ${
               i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
             }`}
           >
@@ -185,9 +185,9 @@ export function ShowcaseSection() {
                 transition={{ duration: 0.3 }}
                 className="aspect-[4/3] rounded-2xl overflow-hidden relative"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(212,168,83,0.1)",
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(212,168,83,0.15)",
+                  boxShadow: "0 20px 60px rgba(212,168,83,0.12), 0 4px 20px rgba(212,168,83,0.08)",
                 }}
               >
                 {/* Inner glow */}

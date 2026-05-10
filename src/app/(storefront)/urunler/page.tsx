@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { getSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
@@ -65,7 +65,7 @@ export default async function ProductsPage({
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 relative overflow-hidden">
+    <div className="min-h-screen pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none opacity-20"
         style={{ background: "radial-gradient(circle, rgba(212,168,83,0.08) 0%, transparent 70%)", transform: "translate(20%, -20%)" }} />
@@ -78,7 +78,7 @@ export default async function ProductsPage({
               style={{ background: "rgba(212,168,83,0.08)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}>
               Koleksiyonumuz
             </div>
-            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-5">
               Tüm <span className="text-gradient-gold">Ürünler</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">

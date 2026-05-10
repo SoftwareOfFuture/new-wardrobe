@@ -1,10 +1,13 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { Plus, Edit, Images } from "lucide-react";
+import { Plus, Images } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProjectActions } from "@/components/admin/ProjectActions";
+
+export const dynamic = "force-dynamic";
 
 export default async function ProjectsAdminPage() {
-  let projects: { id: string; name: string; category: string | null; published: boolean; _count: { images: number } }[] = [];
+  let projects: { id: string; name: string; slug: string; category: string | null; published: boolean; _count: { images: number } }[] = [];
 
   try {
     projects = await prisma.project.findMany({
@@ -12,6 +15,7 @@ export default async function ProjectsAdminPage() {
       select: {
         id: true,
         name: true,
+        slug: true,
         category: true,
         published: true,
         _count: { select: { images: true } },
@@ -35,22 +39,23 @@ export default async function ProjectsAdminPage() {
       </div>
 
       <div className="glass rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border/50">
               <th className="text-left px-4 py-3 font-medium text-muted-foreground">Proje Adı</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Kategori</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Görseller</th>
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Kategori</th>
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Görseller</th>
               <th className="text-left px-4 py-3 font-medium text-muted-foreground">Durum</th>
-              <th className="text-right px-4 py-3 font-medium text-muted-foreground">İşlem</th>
+              <th className="text-right px-4 py-3 font-medium text-muted-foreground">İşlemler</th>
             </tr>
           </thead>
           <tbody>
             {projects.map((project) => (
-              <tr key={project.id} className="border-b border-border/30 hover:bg-white/3 transition-colors">
-                <td className="px-4 py-3 font-medium">{project.name}</td>
-                <td className="px-4 py-3 text-muted-foreground">{project.category || "—"}</td>
-                <td className="px-4 py-3">
+              <tr key={project.id} className="border-b border-border/30 hover:bg-white/[0.02] transition-colors">
+                <td className="px-4 py-3 font-medium max-w-[140px] sm:max-w-none truncate">{project.name}</td>
+                <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{project.category || "—"}</td>
+                <td className="px-4 py-3 hidden sm:table-cell">
                   <span className="flex items-center gap-1 text-muted-foreground">
                     <Images className="w-3.5 h-3.5" />
                     {project._count.images}
@@ -62,16 +67,13 @@ export default async function ProjectsAdminPage() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/projeler/${project.id}`}>
-                    <Button variant="ghost" size="sm">
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                  </Link>
+                  <ProjectActions projectId={project.id} projectName={project.name} />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
         {projects.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">Henüz proje yok</div>
         )}

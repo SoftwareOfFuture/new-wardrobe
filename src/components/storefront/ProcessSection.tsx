@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -63,7 +63,7 @@ export function ProcessSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-28 px-6 relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
       {/* Bg glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px]"
@@ -72,9 +72,9 @@ export function ProcessSection() {
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <div className="badge-gold mb-5">Nasıl Çalışıyoruz</div>
-          <h2 className="text-4xl sm:text-5xl font-bold">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
             Projeden <span className="text-gradient-gold">Teslimata</span>
           </h2>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
@@ -97,9 +97,9 @@ export function ProcessSection() {
                   <div className="relative mb-8">
                     <div className="w-32 h-32 rounded-full flex items-center justify-center relative z-10 transition-all duration-500 group-hover:scale-110"
                       style={{
-                        background: "rgba(9,9,11,1)",
+                        background: "rgba(255,255,255,0.04)",
                         border: "2px solid rgba(212,168,83,0.35)",
-                        boxShadow: "0 0 0 8px rgba(212,168,83,0.04)",
+                        boxShadow: "0 0 0 8px rgba(212,168,83,0.06)",
                       }}>
                       <Icon className="w-8 h-8" style={{ color: "#D4A853" }} />
                     </div>

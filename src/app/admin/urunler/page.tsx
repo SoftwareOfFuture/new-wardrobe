@@ -3,6 +3,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Package } from "lucide-react";
+import { ProductActions } from "@/components/admin/ProductActions";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminProductsPage() {
   let products: Awaited<ReturnType<typeof fetchProducts>> = [];
@@ -57,23 +60,27 @@ export default async function AdminProductsPage() {
         </div>
       ) : (
         <div className="glass rounded-xl overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                <th className="text-left px-3 py-3 sm:px-4 sm:py-4 text-sm font-medium text-muted-foreground">
                   Ürün
                 </th>
-                <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                <th className="text-left px-3 py-3 sm:px-4 sm:py-4 text-sm font-medium text-muted-foreground hidden sm:table-cell">
                   Kategori
                 </th>
-                <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                <th className="text-left px-3 py-3 sm:px-4 sm:py-4 text-sm font-medium text-muted-foreground hidden sm:table-cell">
                   Fiyat
                 </th>
-                <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                <th className="text-left px-3 py-3 sm:px-4 sm:py-4 text-sm font-medium text-muted-foreground">
                   Durum
                 </th>
-                <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                <th className="text-left px-3 py-3 sm:px-4 sm:py-4 text-sm font-medium text-muted-foreground hidden md:table-cell">
                   3D Model
+                </th>
+                <th className="text-right px-3 py-3 sm:px-4 sm:py-4 text-sm font-medium text-muted-foreground">
+                  İşlem
                 </th>
               </tr>
             </thead>
@@ -83,39 +90,39 @@ export default async function AdminProductsPage() {
                   key={product.id}
                   className="border-b border-border last:border-0 hover:bg-secondary/50 transition-colors"
                 >
-                  <td className="p-4">
+                  <td className="px-3 py-3 sm:px-4 sm:py-4">
                     <Link
                       href={`/admin/urunler/${product.id}`}
-                      className="flex items-center gap-3 hover:text-primary transition-colors"
+                      className="flex items-center gap-2 sm:gap-3 hover:text-primary transition-colors"
                     >
                       {product.images[0] ? (
                         <img
                           src={product.images[0].url}
                           alt={product.name}
-                          className="w-10 h-10 rounded-lg object-cover"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-secondary flex items-center justify-center shrink-0">
                           <Package className="w-4 h-4 text-muted-foreground" />
                         </div>
                       )}
-                      <span className="font-medium">{product.name}</span>
+                      <span className="font-medium truncate max-w-[100px] sm:max-w-none">{product.name}</span>
                     </Link>
                   </td>
-                  <td className="p-4 text-sm text-muted-foreground">
+                  <td className="px-3 py-3 sm:px-4 sm:py-4 text-sm text-muted-foreground hidden sm:table-cell">
                     {product.category?.name || "—"}
                   </td>
-                  <td className="p-4 text-sm">
+                  <td className="px-3 py-3 sm:px-4 sm:py-4 text-sm whitespace-nowrap hidden sm:table-cell">
                     {Number(product.price).toLocaleString("tr-TR")} ₺
                   </td>
-                  <td className="p-4">
+                  <td className="px-3 py-3 sm:px-4 sm:py-4">
                     <Badge
                       variant={product.published ? "default" : "secondary"}
                     >
                       {product.published ? "Yayında" : "Taslak"}
                     </Badge>
                   </td>
-                  <td className="p-4">
+                  <td className="px-3 py-3 sm:px-4 sm:py-4 hidden md:table-cell">
                     {product.model3d ? (
                       <Badge
                         variant={
@@ -134,10 +141,14 @@ export default async function AdminProductsPage() {
                       <span className="text-sm text-muted-foreground">—</span>
                     )}
                   </td>
+                  <td className="px-3 py-3 sm:px-4 sm:py-4 text-right">
+                    <ProductActions productId={product.id} productName={product.name} />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

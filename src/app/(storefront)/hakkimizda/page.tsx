@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { getSettings } from "@/lib/settings";
 import { ScrollReveal } from "@/components/storefront/ScrollReveal";
 import { CheckCircle2, Factory, Wrench, Users, Award, Building2, ArrowRight } from "lucide-react";
@@ -60,7 +60,7 @@ export default async function AboutPage() {
   const mission     = settings["about.mission"]     || "";
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 relative overflow-hidden">
+    <div className="min-h-screen pt-28 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative overflow-hidden">
       {/* Ambient light */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[700px] h-[600px] opacity-25"
@@ -69,12 +69,12 @@ export default async function AboutPage() {
           style={{ background: "radial-gradient(ellipse, rgba(212,168,83,0.06) 0%, transparent 70%)", transform: "translateX(-30%)" }} />
       </div>
 
-      <div className="max-w-6xl mx-auto relative space-y-28">
+      <div className="max-w-6xl mx-auto relative space-y-14 sm:space-y-20 lg:space-y-28">
 
         {/* Hero */}
         <ScrollReveal className="text-center">
           <div className="badge-gold mb-7">{badge}</div>
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-7">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-7">
             {title.split(" ").slice(0, 1).map((w, i) => (
               <span key={i} className="text-gradient-gold">{w} </span>
             ))}
@@ -89,8 +89,8 @@ export default async function AboutPage() {
 
         {/* Intro image gallery — asymmetric masonry */}
         <ScrollReveal>
-          <div className="grid grid-cols-3 grid-rows-2 gap-3 h-[420px] sm:h-[500px]">
-            <div className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden group">
+          <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-2 gap-2 sm:gap-3 h-[280px] sm:h-[420px] lg:h-[500px]">
+            <div className="col-span-1 sm:col-span-2 row-span-2 relative rounded-2xl overflow-hidden group">
               <Image src={INTRO_IMGS[0]} alt="Urban Mobilya" fill
                 className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 sizes="(max-width: 768px) 66vw, 40vw" />
@@ -117,7 +117,7 @@ export default async function AboutPage() {
           ].map((stat, i) => (
             <ScrollReveal key={i} delay={i * 0.08}>
               <div className="relative rounded-2xl p-6 text-center group overflow-hidden shimmer transition-all duration-300 hover:glow-gold-subtle hover:-translate-y-1"
-                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,168,83,0.15)" }}>
                 <p className="text-3xl sm:text-4xl font-bold text-gradient-gold">{stat.value}</p>
                 <p className="mt-1.5 text-sm font-medium">{stat.label}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
@@ -150,8 +150,8 @@ export default async function AboutPage() {
 
         {/* Services */}
         <div>
-          <ScrollReveal className="text-center mb-14">
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
+          <ScrollReveal className="text-center mb-10 sm:mb-14">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
               <span className="text-gradient-gold">Hizmetlerimiz</span>
             </h2>
             <p className="mt-4 text-muted-foreground">Müşterilerimize en iyisini sunmak için titizlikle çalışıyoruz.</p>
@@ -160,7 +160,7 @@ export default async function AboutPage() {
             {services.map((s, i) => (
               <ScrollReveal key={i} delay={i * 0.07}>
                 <div className="group flex gap-4 p-6 rounded-2xl h-full transition-all duration-300 hover:glow-gold-subtle hover:-translate-y-0.5 shimmer"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,168,83,0.12)" }}>
                   <div className="shrink-0 mt-0.5">
                     <div className="w-7 h-7 rounded-full flex items-center justify-center"
                       style={{ background: "rgba(212,168,83,0.12)" }}>
@@ -179,7 +179,7 @@ export default async function AboutPage() {
 
         {/* Facility photo grid */}
         <ScrollReveal>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
             {FACILITY_IMGS.map((url, i) => (
               <div key={i} className={`relative rounded-xl overflow-hidden group ${i === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"}`}>
                 <Image src={url} alt={`Üretim tesisi ${i + 1}`} fill
@@ -193,8 +193,8 @@ export default async function AboutPage() {
 
         {/* Infrastructure */}
         <div>
-          <ScrollReveal className="text-center mb-14">
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
+          <ScrollReveal className="text-center mb-10 sm:mb-14">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
               Teknik <span className="text-gradient-gold">Altyapımız</span>
             </h2>
             <p className="mt-4 text-muted-foreground">Üretim gücümüzü destekleyen entegre altyapı.</p>
@@ -203,7 +203,7 @@ export default async function AboutPage() {
             {infrastructure.map((item, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div className="group p-8 rounded-2xl h-full transition-all duration-300 hover:glow-gold-subtle hover:-translate-y-1 shimmer"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,168,83,0.15)" }}>
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6"
                     style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)" }}>
                     <item.icon className="w-6 h-6" style={{ color: "#D4A853" }} />
@@ -219,7 +219,7 @@ export default async function AboutPage() {
         {/* HR section */}
         <ScrollReveal>
           <div className="relative rounded-3xl p-8 sm:p-12 overflow-hidden"
-            style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,168,83,0.15)" }}>
             <div className="absolute bottom-0 right-0 w-72 h-72 pointer-events-none opacity-40"
               style={{ background: "radial-gradient(circle at bottom right, rgba(212,168,83,0.07) 0%, transparent 65%)" }} />
             <div className="flex items-center gap-3 mb-8">

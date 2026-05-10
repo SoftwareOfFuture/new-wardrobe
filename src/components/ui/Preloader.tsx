@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
-export function Preloader({ text = "NEW WARDROBE" }: { text?: string }) {
+export function Preloader({ text = "URBAN MOBİLYA" }: { text?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -118,7 +118,7 @@ export function Preloader({ text = "NEW WARDROBE" }: { text?: string }) {
             return (
               <>
                 <span style={{ color: "#D4A853" }}>{first}</span>
-                {rest && <> <span className="text-white">{rest}</span></>}
+                {rest && <> <span style={{ color: "rgba(255,255,255,0.85)" }}>{rest}</span></>}
               </>
             );
           })()}

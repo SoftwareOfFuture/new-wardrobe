@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { MapPin, Phone, Mail, MessageCircle, ArrowUpRight, ExternalLink } from "lucide-react";
 
 interface FooterProps {
@@ -16,9 +16,9 @@ interface FooterProps {
 
 const NAV_LINKS = [
   { label: "Ana Sayfa", href: "/" },
-  { label: "Projelerimiz", href: "/projelerimiz" },
   { label: "Ürünler", href: "/urunler" },
-  { label: "Oda Planlayıcı", href: "/oda-planlayici" },
+  { label: "Projelerimiz", href: "/projelerimiz" },
+  { label: "Urban Creative", href: "/oda-planlayici" },
   { label: "Hakkımızda", href: "/hakkimizda" },
   { label: "İletişim", href: "/iletisim" },
 ];
@@ -33,7 +33,7 @@ const SERVICES = [
 ];
 
 export function Footer({
-  brand = "NEW WARDROBE",
+  brand = "URBAN MOBİLYA",
   footerText = "5 yıldızlı otellere özel mobilya üretimi. Antalya'dan Türkiye'ye ve dünyaya.",
   copyright,
   phone = "",
@@ -69,13 +69,13 @@ export function Footer({
         style={{ background: "radial-gradient(circle at bottom right, rgba(212,168,83,0.03) 0%, transparent 60%)" }} />
 
       {/* Main content */}
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-10">
 
         {/* Top section: Big brand + tagline */}
-        <div className="mb-14 pb-14" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div className="mb-10 sm:mb-14 pb-10 sm:pb-14" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 sm:gap-8">
             <div>
-              <div className="text-4xl sm:text-5xl font-black tracking-[-0.02em] mb-3">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-[-0.02em] mb-3">
                 <span style={{
                   background: "linear-gradient(135deg, #F0D070 0%, #D4A853 50%, #B8902E 100%)",
                   WebkitBackgroundClip: "text",
@@ -111,10 +111,10 @@ export function Footer({
         </div>
 
         {/* 4-column grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-14">
 
           {/* Col 1: Company info */}
-          <div className="col-span-2 md:col-span-1 space-y-4">
+          <div className="col-span-1 space-y-4">
             <h5 className="text-[11px] font-bold tracking-[0.2em] uppercase" style={{ color: "#D4A853" }}>
               Şirket
             </h5>
@@ -214,16 +214,16 @@ export function Footer({
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8"
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 pt-6 sm:pt-8"
           style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-          <p className="text-xs text-white/25">{copyrightText}. Tüm hakları saklıdır.</p>
-          <div className="flex items-center gap-5">
+          <p className="text-xs text-white/25 text-center sm:text-left">{copyrightText}</p>
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
             <span className="text-xs text-white/25 cursor-pointer hover:text-white/50 transition-colors">Gizlilik Politikası</span>
-            <span className="text-white/10">·</span>
+            <span className="text-white/10 hidden sm:inline">·</span>
             <span className="text-xs text-white/25 cursor-pointer hover:text-white/50 transition-colors">Kullanım Şartları</span>
-            <span className="text-white/10">·</span>
+            <span className="text-white/10 hidden sm:inline">·</span>
             <span className="text-xs font-medium" style={{ color: "rgba(212,168,83,0.5)" }}>
-              Antalya 🇹🇷
+              Antalya
             </span>
           </div>
         </div>

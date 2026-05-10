@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
@@ -181,8 +181,8 @@ export function HeroSection({
       <HeroScene3D />
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pt-24 pb-32">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-24 sm:pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 items-center">
 
           {/* Left: text */}
           <div>
@@ -323,7 +323,7 @@ export function HeroSection({
       </div>
 
       {/* ── Scroll indicator ── */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hidden sm:flex">
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { HeroSection } from "@/components/storefront/HeroSection";
 import { StatsSection } from "@/components/storefront/StatsSection";
@@ -28,7 +28,7 @@ const FALLBACK_HERO_BG =
 
 const DEFAULT_FEATURES = [
   { icon: "Award", title: "12 Yıllık Deneyim", description: "Türkiye'nin önde gelen otel zincirlerine kesintisiz hizmet veren köklü bir üretici." },
-  { icon: "Box", title: "3D Modelleme", description: "Her ürün için 3D görsel ve sanal oda planlayıcı ile siparişten önce tam ön izleme." },
+  { icon: "Box", title: "3D Modelleme", description: "Her ürün için 3D görsel ve Urban Creative ile siparişten önce tam ön izleme." },
   { icon: "Wrench", title: "Entegre Tesis", description: "CNC freze, boyahane, demir hane tek çatı altında — kalite kontrolü uçtan uca bizde." },
   { icon: "Layout", title: "Anahtar Teslim", description: "Tasarımdan montaja, garanti ve teknik destekle tam kapsamlı proje yönetimi." },
 ];
@@ -124,16 +124,16 @@ export default async function HomePage() {
 
       {/* ── FEATURED PROJECTS ────────────────────────── */}
       {featuredProjects.length > 0 && (
-        <section className="py-28 px-6 relative overflow-hidden">
+        <section className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
           {/* Bg accent */}
           <div className="absolute inset-0 pointer-events-none"
             style={{ background: "linear-gradient(180deg, transparent 0%, rgba(212,168,83,0.02) 50%, transparent 100%)" }} />
 
           <div className="max-w-7xl mx-auto">
-            <ScrollReveal className="mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <ScrollReveal className="mb-10 sm:mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
               <div>
                 <div className="badge-gold mb-4">Referans Projeler</div>
-                <h2 className="text-4xl sm:text-5xl font-bold leading-tight">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                   Tamamlanan<br />
                   <span className="text-gradient-gold">Projelerimiz</span>
                 </h2>
@@ -156,7 +156,7 @@ export default async function HomePage() {
                 >
                   <Link href={`/projelerimiz/${project.slug}`} className="group block h-full">
                     <article className="shimmer relative rounded-2xl overflow-hidden h-full"
-                      style={{ border: "1px solid rgba(255,255,255,0.07)" }}>
+                      style={{ border: "1px solid rgba(212,168,83,0.12)" }}>
                       <div className={`relative overflow-hidden ${i === 0 ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
                         {project.coverImage ? (
                           <Image
@@ -180,13 +180,13 @@ export default async function HomePage() {
                         <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
                           {project.category && (
                             <span className="px-2.5 py-1 rounded-full text-xs font-medium"
-                              style={{ background: "rgba(9,9,11,0.75)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                              style={{ background: "rgba(9,9,11,0.80)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(212,168,83,0.15)" }}>
                               {project.category}
                             </span>
                           )}
                           {project.imageCount > 1 && (
                             <span className="ml-auto px-2.5 py-1 rounded-full text-xs font-medium"
-                              style={{ background: "rgba(9,9,11,0.75)", color: "#D4A853", border: "1px solid rgba(212,168,83,0.25)" }}>
+                              style={{ background: "rgba(9,9,11,0.80)", color: "#D4A853", border: "1px solid rgba(212,168,83,0.25)" }}>
                               {project.imageCount} foto
                             </span>
                           )}
@@ -223,19 +223,19 @@ export default async function HomePage() {
       <ProcessSection />
 
       {/* ── TESİS / ÜRETİM ALANI ─────────────────────── */}
-      <section className="py-28 px-6 relative overflow-hidden">
+      <section className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute bottom-0 left-0 right-0 h-px"
             style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,83,0.12), transparent)" }} />
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
             {/* Left copy */}
             <ScrollReveal>
               <div className="badge-gold mb-6">Üretim Gücümüz</div>
-              <h2 className="text-3xl sm:text-4xl xl:text-5xl font-bold mb-6 leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight">
                 Modern Tesisimizde<br />
                 <span className="text-gradient-gold">Entegre Üretim</span>
               </h2>
@@ -270,7 +270,7 @@ export default async function HomePage() {
               <div className="grid grid-cols-2 gap-3">
                 {/* Large top-left */}
                 <div className="relative rounded-2xl overflow-hidden aspect-square row-span-2 group"
-                  style={{ border: "1px solid rgba(255,255,255,0.07)" }}>
+                  style={{ border: "1px solid rgba(212,168,83,0.12)" }}>
                   <Image
                     src={FACILITY_IMAGES[0]}
                     alt="Üretim tesisi"
@@ -284,7 +284,7 @@ export default async function HomePage() {
                 {/* Right column: 3 small */}
                 {FACILITY_IMAGES.slice(1, 4).map((url, i) => (
                   <div key={i} className="relative rounded-2xl overflow-hidden aspect-[4/3] group"
-                    style={{ border: "1px solid rgba(255,255,255,0.07)" }}>
+                    style={{ border: "1px solid rgba(212,168,83,0.12)" }}>
                     <Image
                       src={url}
                       alt={`Tesis ${i + 2}`}
@@ -321,17 +321,17 @@ export default async function HomePage() {
 
       {/* ── FEATURED PRODUCTS ────────────────────────── */}
       {featuredProducts.length > 0 && (
-        <section className="py-28 px-6 relative overflow-hidden">
+        <section className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-0 left-0 right-0 h-px"
               style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,83,0.12), transparent)" }} />
           </div>
 
           <div className="max-w-7xl mx-auto">
-            <ScrollReveal className="mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <ScrollReveal className="mb-10 sm:mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
               <div>
                 <div className="badge-gold mb-4">Ürün Koleksiyonu</div>
-                <h2 className="text-4xl sm:text-5xl font-bold leading-tight">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                   Öne Çıkan<br />
                   <span className="text-gradient-gold">Ürünlerimiz</span>
                 </h2>
@@ -365,7 +365,7 @@ export default async function HomePage() {
       )}
 
       {/* ── PARTNER LOGOS / SOSYAL KANIT ─────────────── */}
-      <section className="py-16 px-6 relative overflow-hidden">
+      <section className="py-10 sm:py-16 px-4 sm:px-6 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-0 right-0 h-px divider-gold" />
           <div className="absolute bottom-0 left-0 right-0 h-px divider-gold" />
@@ -381,8 +381,8 @@ export default async function HomePage() {
                 <div key={brand}
                   className="px-5 py-2.5 rounded-xl text-sm font-bold tracking-wide transition-all duration-300 hover:text-primary"
                   style={{
-                    color: "rgba(255,255,255,0.18)",
-                    border: "1px solid rgba(255,255,255,0.06)",
+                    color: "rgba(255,255,255,0.35)",
+                    border: "1px solid rgba(212,168,83,0.10)",
                   }}>
                   {brand}
                 </div>

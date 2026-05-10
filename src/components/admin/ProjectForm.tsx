@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Save, Loader2, Upload, Image as ImageIcon, X, GripVertical } from "lucide-react";
+import { Save, Loader2, Upload, Image as ImageIcon, X, GripVertical, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 interface ProjectImage {
@@ -42,11 +42,28 @@ function slugify(text: string): string {
 export function ProjectForm({ initialData }: ProjectFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [name, setName] = useState(initialData?.name || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [images, setImages] = useState<ProjectImage[]>(initialData?.images || []);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleDelete() {
+    if (!initialData) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/projects/${initialData.id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Silinemedi");
+      toast.success("Proje silindi");
+      router.push("/admin/projeler");
+      router.refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Silme hatası");
+      setDeleting(false);
+    }
+  }
 
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
@@ -176,12 +193,36 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         <p className="text-xs text-muted-foreground">İlk görsel kapak görseli olarak kullanılır.</p>
       </div>
 
-      <div className="flex gap-3">
-        <Button type="submit" disabled={loading}>
-          {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-          {initialData ? "Güncelle" : "Oluştur"}
-        </Button>
-        <Button type="button" variant="outline" onClick={() => router.back()}>İptal</Button>
+      <div className="flex items-center justify-between">
+        <div className="flex gap-3">
+          <Button type="submit" disabled={loading}>
+            {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+            {initialData ? "Güncelle" : "Oluştur"}
+          </Button>
+          <Button type="button" variant="outline" onClick={() => router.back()}>İptal</Button>
+        </div>
+
+        {initialData && (
+          <div className="flex items-center gap-2">
+            {showDeleteConfirm ? (
+              <>
+                <span className="text-sm text-destructive font-medium">Bu proje silinecek!</span>
+                <Button type="button" variant="destructive" size="sm" onClick={handleDelete} disabled={deleting}>
+                  {deleting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Trash2 className="w-4 h-4 mr-1" />}
+                  Evet, Sil
+                </Button>
+                <Button type="button" variant="ghost" size="sm" onClick={() => setShowDeleteConfirm(false)} disabled={deleting}>
+                  Vazgeç
+                </Button>
+              </>
+            ) : (
+              <Button type="button" variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => setShowDeleteConfirm(true)}>
+                <Trash2 className="w-4 h-4 mr-1" />
+                Projeyi Sil
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </form>
   );

@@ -6,7 +6,7 @@ import type { AvailableModel } from "@/types/room-planner";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
-  return { title: settings["pagetitle.planner"] || "Oda Planlayıcı" };
+  return { title: settings["pagetitle.planner"] || "Urban Creative" };
 }
 
 export default async function RoomPlannerPage() {

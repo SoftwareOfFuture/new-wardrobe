@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+﻿import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { ScrollReveal } from "@/components/storefront/ScrollReveal";
 import Image from "next/image";
@@ -72,7 +72,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const galleryImages = project.images.slice(1);
 
   return (
-    <div className="min-h-screen pb-24 relative overflow-hidden">
+    <div className="min-h-screen pb-16 sm:pb-24 relative overflow-hidden">
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.03]"
@@ -82,7 +82,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Hero section with cover image */}
-      <div className="relative w-full" style={{ height: "min(70vh, 600px)" }}>
+      <div className="relative w-full" style={{ height: "min(55vh, 600px)" }}>
         {coverImage ? (
           <>
             <Image
@@ -104,7 +104,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         )}
 
         {/* Back link over hero */}
-        <div className="absolute top-0 left-0 right-0 pt-28 px-6">
+        <div className="absolute top-0 left-0 right-0 pt-24 sm:pt-28 px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <Link
               href="/projelerimiz"
@@ -118,12 +118,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Title over hero bottom */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-10">
+        <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-6 sm:pb-10">
           <div className="max-w-6xl mx-auto">
             {project.category && (
-              <div className="badge-gold mb-4">{project.category}</div>
+              <div className="badge-gold mb-3 sm:mb-4">{project.category}</div>
             )}
-            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
               {project.name}
             </h1>
           </div>
@@ -131,11 +131,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto px-6 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
 
         {/* Meta bar */}
         <ScrollReveal>
-          <div className="flex flex-wrap items-center gap-6 py-8 mb-6"
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 py-6 sm:py-8 mb-4 sm:mb-6"
             style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
             {project.images.length > 0 && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -180,7 +180,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             </ScrollReveal>
 
             {/* Masonry-style gallery */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8">
               {galleryImages.map((img, i) => {
                 // Make every 7th image span 2 columns for visual variety
                 const isWide = i % 7 === 0;
@@ -215,8 +215,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         )}
 
         {/* Bottom CTA */}
-        <ScrollReveal className="mt-16">
-          <div className="relative rounded-3xl overflow-hidden p-8 sm:p-12 text-center"
+        <ScrollReveal className="mt-10 sm:mt-16">
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-6 sm:p-12 text-center"
             style={{ background: "rgba(212,168,83,0.04)", border: "1px solid rgba(212,168,83,0.12)" }}>
             {/* Decorative corner glows */}
             <div className="absolute top-0 left-0 w-32 h-32 opacity-20"

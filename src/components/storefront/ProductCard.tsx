@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -58,8 +58,8 @@ export function ProductCard({
         <div
           className="relative rounded-2xl overflow-hidden h-full transition-all duration-300"
           style={{
-            background: "rgba(255,255,255,0.035)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(212,168,83,0.15)",
             transform: "translateZ(0)",
           }}
         >
@@ -98,7 +98,7 @@ export function ProductCard({
               )}
               {has3DModel && (
                 <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1"
-                  style={{ background: "rgba(9,9,11,0.8)", color: "#D4A853", border: "1px solid rgba(212,168,83,0.3)" }}>
+                  style={{ background: "rgba(9,9,11,0.80)", color: "#D4A853", border: "1px solid rgba(212,168,83,0.3)" }}>
                   <Box className="w-2.5 h-2.5" />3D
                 </span>
               )}

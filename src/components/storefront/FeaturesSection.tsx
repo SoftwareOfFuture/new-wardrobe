@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -87,7 +87,7 @@ export function FeaturesSection({
   );
 
   return (
-    <section ref={sectionRef} className="py-28 px-6 relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(212,168,83,0.04) 0%, transparent 70%)" }}
@@ -95,7 +95,7 @@ export function FeaturesSection({
 
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
-        <div ref={headingRef} className="text-center mb-16">
+        <div ref={headingRef} className="text-center mb-10 sm:mb-16">
           <div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-xs font-medium tracking-widest uppercase"
             style={{
@@ -106,7 +106,7 @@ export function FeaturesSection({
           >
             Avantajlarımız
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
             <span className="text-gradient-gold">{title}</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">

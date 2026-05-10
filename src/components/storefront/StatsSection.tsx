@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
@@ -58,7 +58,7 @@ export function StatsSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="relative py-20 overflow-hidden">
+    <section ref={sectionRef} className="relative py-12 sm:py-20 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0"
@@ -72,7 +72,7 @@ export function StatsSection() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, i) => (
-            <div key={stat.label} className="stat-item relative group py-8 px-6 text-center">
+            <div key={stat.label} className="stat-item relative group py-5 px-3 sm:py-8 sm:px-6 text-center">
               {/* Dividers */}
               {i < stats.length - 1 && (
                 <div className="absolute right-0 top-6 bottom-6 w-px hidden lg:block"
@@ -100,8 +100,8 @@ export function StatsSection() {
                   style={{ background: "rgba(212,168,83,0.15)" }} />
               </div>
 
-              <p className="text-sm font-semibold text-white/75 mb-0.5">{stat.label}</p>
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{stat.sub}</p>
+              <p className="text-sm font-semibold mb-0.5" style={{ color: "rgba(255,255,255,0.7)" }}>{stat.label}</p>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>{stat.sub}</p>
 
               {/* Bottom accent line on hover */}
               <div className="absolute bottom-0 left-1/4 right-1/4 h-px scale-x-0 group-hover:scale-x-100 transition-transform duration-400"

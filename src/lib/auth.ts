@@ -12,6 +12,7 @@ const authSecret =
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: authSecret || undefined,
+  trustHost: true,
   providers: [
     Credentials({
       name: "credentials",

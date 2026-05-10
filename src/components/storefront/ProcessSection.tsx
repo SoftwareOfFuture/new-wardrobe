@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, AnimatePresence } from "framer-motion";
 import { ClipboardList, Ruler, Factory, Truck } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,7 +15,7 @@ const steps = [
     title: "Keşif & Tasarım",
     tag: "Ücretsiz",
     desc: "Ücretsiz keşif ziyaretimizde ihtiyaçlarınızı analiz eder, ölçüm alır ve size özel tasarım dosyası hazırlarız.",
-    color: "from-amber-500/10 to-transparent",
+    above: true,
   },
   {
     number: "02",
@@ -24,7 +23,7 @@ const steps = [
     title: "Proje Geliştirme",
     tag: "3 İş Günü",
     desc: "Teknik çizimler, malzeme seçimi ve fiyat teklifini 3 iş günü içinde teslim ederiz. Onayınızla üretime geçeriz.",
-    color: "from-yellow-500/10 to-transparent",
+    above: false,
   },
   {
     number: "03",
@@ -32,7 +31,7 @@ const steps = [
     title: "CNC Üretim",
     tag: "Entegre Tesis",
     desc: "Antalya tesisimizde CNC freze, boyahane ve demir hane süreçleri entegre yönetilerek üretim tamamlanır.",
-    color: "from-orange-500/10 to-transparent",
+    above: true,
   },
   {
     number: "04",
@@ -40,97 +39,136 @@ const steps = [
     title: "Teslimat & Montaj",
     tag: "Tüm Türkiye",
     desc: "Profesyonel montaj ekibimiz tüm Türkiye ve yurt dışına kurulum gerçekleştirir. Garanti kapsamındayız.",
-    color: "from-amber-400/10 to-transparent",
+    above: false,
   },
 ];
 
 export function ProcessSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [activeStep, setActiveStep] = useState<number | null>(null);
 
   useGSAP(() => {
     if (!sectionRef.current) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    /* ── Header ── */
-    gsap.from(".proc-badge, .proc-title, .proc-sub", {
-      y: 25, opacity: 0, duration: 0.7, stagger: 0.1, ease: "power3.out",
-      scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
-    });
+    const isMobile = window.innerWidth < 1024;
 
-    if (!reduced) {
-      /* ── Desktop: animated line (scrub) ── */
-      gsap.fromTo(
-        ".proc-line-fill",
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          transformOrigin: "left center",
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".proc-desktop",
-            start: "top 65%",
-            end: "bottom 55%",
-            scrub: 0.8,
+    /* ─────────────── DESKTOP ─────────────── */
+    if (!isMobile) {
+      const truckEl  = sectionRef.current.querySelector<HTMLElement>(".d-truck");
+      const fillEl   = sectionRef.current.querySelector<HTMLElement>(".d-fill");
+      const trackEl  = sectionRef.current.querySelector<HTMLElement>(".d-track");
+      const dotEls   = sectionRef.current.querySelectorAll<HTMLElement>(".d-dot");
+      const cardEls  = sectionRef.current.querySelectorAll<HTMLElement>(".d-card");
+      const connEls  = sectionRef.current.querySelectorAll<HTMLElement>(".d-conn");
+      if (!truckEl || !fillEl || !trackEl) return;
+
+      // Initial state — everything faded
+      gsap.set(fillEl,  { scaleX: 0, transformOrigin: "left center" });
+      gsap.set(cardEls, { opacity: 0.15, y: 18 });
+      gsap.set(dotEls,  { scale: 0.5, opacity: 0.3 });
+      gsap.set(connEls, { scaleY: 0, transformOrigin: "top center", opacity: 0.3 });
+
+      const maxX = trackEl.offsetWidth - truckEl.offsetWidth - 8;
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=2000",
+          pin: true,
+          scrub: 0.9,
+          anticipatePin: 1,
+          onUpdate(self) {
+            const p = self.progress;
+            // Unlock each step as truck crosses its threshold
+            cardEls.forEach((card, i) => {
+              const thresh = (i / steps.length) + 0.01;
+              const on = p >= thresh;
+              gsap.to(card, { opacity: on ? 1 : 0.15, y: on ? 0 : 18, duration: 0.25, overwrite: true });
+              gsap.to(dotEls[i], {
+                scale: on ? 1.1 : 0.5,
+                opacity: on ? 1 : 0.3,
+                duration: 0.25, overwrite: true,
+              });
+              gsap.to(connEls[i], {
+                scaleY: on ? 1 : 0,
+                opacity: on ? 0.5 : 0.3,
+                duration: 0.25, overwrite: true,
+              });
+            });
           },
-        }
-      );
+        },
+      })
+        .to(truckEl, { x: maxX, ease: "none" }, 0)
+        .to(fillEl,  { scaleX: 1, ease: "none" }, 0);
+    }
 
-      /* ── Desktop: cards stagger ── */
-      gsap.from(".proc-card", {
-        y: 55, opacity: 0, duration: 0.75, stagger: 0.14, ease: "power3.out",
-        scrollTrigger: { trigger: ".proc-desktop", start: "top 75%" },
-      });
+    /* ─────────────── MOBILE ─────────────── */
+    else {
+      const truckEl  = sectionRef.current.querySelector<HTMLElement>(".m-truck");
+      const fillEl   = sectionRef.current.querySelector<HTMLElement>(".m-fill");
+      const trackEl  = sectionRef.current.querySelector<HTMLElement>(".m-track");
+      const dotEls   = sectionRef.current.querySelectorAll<HTMLElement>(".m-dot");
+      const cardEls  = sectionRef.current.querySelectorAll<HTMLElement>(".m-card");
+      if (!truckEl || !fillEl || !trackEl) return;
 
-      /* ── Desktop: number watermarks scale in ── */
-      gsap.from(".proc-watermark", {
-        scale: 1.4, opacity: 0, duration: 1, stagger: 0.14, ease: "expo.out",
-        scrollTrigger: { trigger: ".proc-desktop", start: "top 75%" },
-      });
+      gsap.set(fillEl,  { scaleY: 0, transformOrigin: "top center" });
+      gsap.set(cardEls, { opacity: 0.15, x: 18 });
+      gsap.set(dotEls,  { scale: 0.5, opacity: 0.3 });
 
-      /* ── Mobile: vertical fill ── */
-      gsap.fromTo(
-        ".proc-vline-fill",
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          transformOrigin: "top center",
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".proc-mobile",
-            start: "top 60%",
-            end: "bottom 70%",
-            scrub: 0.8,
+      const maxY = trackEl.offsetHeight - truckEl.offsetHeight - 4;
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=1800",
+          pin: true,
+          scrub: 0.9,
+          anticipatePin: 1,
+          onUpdate(self) {
+            const p = self.progress;
+            cardEls.forEach((card, i) => {
+              const thresh = (i / steps.length) + 0.01;
+              const on = p >= thresh;
+              gsap.to(card, { opacity: on ? 1 : 0.15, x: on ? 0 : 18, duration: 0.25, overwrite: true });
+              gsap.to(dotEls[i], {
+                scale: on ? 1.15 : 0.5,
+                opacity: on ? 1 : 0.3,
+                duration: 0.25, overwrite: true,
+              });
+            });
           },
-        }
-      );
-
-      /* ── Mobile: steps slide in from right ── */
-      gsap.from(".proc-mobile-step", {
-        x: 40, opacity: 0, duration: 0.6, stagger: 0.15, ease: "power3.out",
-        scrollTrigger: { trigger: ".proc-mobile", start: "top 75%" },
-      });
+        },
+      })
+        .to(truckEl, { y: maxY, ease: "none" }, 0)
+        .to(fillEl,  { scaleY: 1, ease: "none" }, 0);
     }
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-20 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
-
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden"
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}
+    >
       {/* Ambient glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] pointer-events-none"
-        style={{ background: "radial-gradient(ellipse, rgba(212,168,83,0.04) 0%, transparent 65%)" }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(212,168,83,0.04) 0%, transparent 70%)" }}
       />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full py-16">
 
         {/* Header */}
-        <div className="text-center mb-14 sm:mb-20 space-y-4">
-          <div className="proc-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.22em] uppercase"
-            style={{ background: "rgba(212,168,83,0.08)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}>
+        <div className="text-center mb-12 sm:mb-14">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.22em] uppercase mb-4"
+            style={{ background: "rgba(212,168,83,0.08)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}
+          >
             Nasıl Çalışıyoruz
           </div>
-          <h2 className="proc-title text-3xl sm:text-4xl lg:text-5xl font-bold" style={{ color: "rgba(255,255,255,0.9)" }}>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold" style={{ color: "rgba(255,255,255,0.9)" }}>
             Projeden{" "}
             <span style={{
               backgroundImage: "linear-gradient(120deg,#c8973a 0%,#f0c97a 50%,#c8973a 100%)",
@@ -139,199 +177,238 @@ export function ProcessSection() {
               Teslimata
             </span>
           </h2>
-          <p className="proc-sub text-sm leading-relaxed max-w-md mx-auto" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <p className="mt-3 text-sm" style={{ color: "rgba(255,255,255,0.38)" }}>
             4 adımda hayalinizdeki mobilyayı gerçeğe dönüştürüyoruz.
           </p>
         </div>
 
-        {/* ══════════════════════════════════════
-            DESKTOP horizontal timeline
-        ══════════════════════════════════════ */}
-        <div className="proc-desktop hidden lg:block relative">
+        {/* ═══════════════ DESKTOP horizontal track ═══════════════ */}
+        <div className="d-track hidden lg:block relative" style={{ height: "320px" }}>
 
-          {/* Track line (faded base) */}
+          {/* Track road base */}
           <div
-            className="absolute top-[56px] left-[12.5%] right-[12.5%] h-px"
-            style={{ background: "rgba(212,168,83,0.1)" }}
+            className="absolute"
+            style={{
+              left: 0, right: 0,
+              top: "50%",
+              height: "6px",
+              transform: "translateY(-50%)",
+              background: "rgba(212,168,83,0.08)",
+              borderRadius: "3px",
+            }}
           >
-            {/* Animated fill */}
+            {/* Gold fill — animated by GSAP */}
             <div
-              className="proc-line-fill absolute inset-0"
-              style={{ background: "linear-gradient(90deg,#D4A853,rgba(212,168,83,0.4))", transformOrigin: "left" }}
+              className="d-fill absolute inset-0 rounded-full"
+              style={{ background: "linear-gradient(90deg, #D4A853, rgba(212,168,83,0.5))" }}
             />
           </div>
 
-          {/* Step dots on the line */}
-          {steps.map((_, i) => (
+          {/* Truck — absolutely on the track */}
+          <div
+            className="d-truck absolute z-20 flex items-center justify-center"
+            style={{
+              top: "50%",
+              left: 0,
+              transform: "translateY(-50%)",
+              width: "48px",
+              height: "48px",
+            }}
+          >
+            {/* Truck icon in a glowing circle */}
             <div
-              key={i}
-              className="absolute top-[48px] w-4 h-4 rounded-full z-10 border-2"
+              className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{
-                left: `calc(12.5% + ${i * 25}% + 10%)`,
-                background: "#09090b",
-                borderColor: "#D4A853",
-                boxShadow: "0 0 8px rgba(212,168,83,0.4)",
+                background: "#D4A853",
+                boxShadow: "0 0 0 6px rgba(212,168,83,0.15), 0 0 20px rgba(212,168,83,0.4)",
               }}
-            />
-          ))}
+            >
+              <Truck className="w-5 h-5 text-black" />
+            </div>
+          </div>
 
-          {/* Cards */}
-          <div className="grid grid-cols-4 gap-5 mt-16">
-            {steps.map((step, i) => {
-              const Icon = step.icon;
-              const isActive = activeStep === i;
+          {/* Step nodes */}
+          {steps.map((step, i) => {
+            const Icon = step.icon;
+            const leftPct = `${(i / (steps.length - 1)) * 100}%`;
 
-              return (
-                <motion.div
-                  key={i}
-                  className="proc-card relative overflow-hidden rounded-2xl flex flex-col p-7 cursor-default"
+            return (
+              <div
+                key={i}
+                className="absolute flex flex-col items-center"
+                style={{
+                  left: leftPct,
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 10,
+                }}
+              >
+                {/* Connector to card (above or below) */}
+                <div
+                  className={`d-conn absolute w-px`}
                   style={{
-                    background: "rgba(255,255,255,0.028)",
-                    border: `1px solid ${isActive ? "rgba(212,168,83,0.35)" : "rgba(212,168,83,0.1)"}`,
-                    boxShadow: isActive ? "0 20px 50px rgba(212,168,83,0.08), inset 0 1px 0 rgba(255,255,255,0.06)" : "inset 0 1px 0 rgba(255,255,255,0.04)",
+                    background: "rgba(212,168,83,0.4)",
+                    height: "80px",
+                    ...(step.above
+                      ? { bottom: "24px", top: "auto" }
+                      : { top: "24px", bottom: "auto" }),
                   }}
-                  whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                  onHoverStart={() => setActiveStep(i)}
-                  onHoverEnd={() => setActiveStep(null)}
+                />
+
+                {/* Step dot */}
+                <div
+                  className="d-dot rounded-full"
+                  style={{
+                    width: "16px", height: "16px",
+                    background: "rgba(212,168,83,0.2)",
+                    border: "2px solid rgba(212,168,83,0.4)",
+                    transition: "box-shadow 0.3s, transform 0.3s",
+                  }}
+                />
+
+                {/* Step card */}
+                <div
+                  className="d-card absolute"
+                  style={{
+                    width: "200px",
+                    ...(step.above
+                      ? { bottom: "calc(50% + 60px)" }
+                      : { top: "calc(50% + 60px)" }),
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
                 >
-                  {/* Watermark number */}
-                  <span
-                    className="proc-watermark absolute -bottom-2 -right-1 font-bold leading-none select-none pointer-events-none"
-                    style={{ fontSize: "7rem", color: "rgba(212,168,83,0.06)", letterSpacing: "-0.05em", lineHeight: 0.85 }}
-                  >
-                    {step.number}
-                  </span>
-
-                  {/* Top: tag */}
-                  <div className="flex items-center justify-between mb-6">
-                    <span
-                      className="inline-block px-2.5 py-1 rounded-full text-[9px] font-bold tracking-[0.15em] uppercase"
-                      style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}
-                    >
-                      {step.tag}
-                    </span>
-                    <span className="text-[10px] font-bold tabular-nums" style={{ color: "rgba(212,168,83,0.35)" }}>
-                      {step.number}
-                    </span>
-                  </div>
-
-                  {/* Icon */}
-                  <motion.div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                    style={{
-                      background: isActive ? "rgba(212,168,83,0.18)" : "rgba(212,168,83,0.09)",
-                      border: "1px solid rgba(212,168,83,0.25)",
-                    }}
-                    animate={{ rotate: isActive ? [0, -8, 8, 0] : 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                  >
-                    <Icon className="w-5 h-5" style={{ color: "#D4A853" }} />
-                  </motion.div>
-
-                  {/* Content */}
-                  <h3
-                    className="text-base font-bold mb-2 transition-colors duration-300"
-                    style={{ color: isActive ? "#D4A853" : "rgba(255,255,255,0.88)" }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
-                    {step.desc}
-                  </p>
-
-                  {/* Active glow bottom bar */}
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-[2px]"
-                        style={{ background: "linear-gradient(90deg, #D4A853, transparent)" }}
-                        initial={{ scaleX: 0, originX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        exit={{ scaleX: 0 }}
-                        transition={{ duration: 0.4 }}
-                      />
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════════
-            MOBILE vertical timeline
-        ══════════════════════════════════════ */}
-        <div className="proc-mobile lg:hidden relative pl-12">
-
-          {/* Vertical base line */}
-          <div
-            className="absolute left-4 top-3 bottom-3 w-px"
-            style={{ background: "rgba(212,168,83,0.1)" }}
-          >
-            {/* Animated fill */}
-            <div
-              className="proc-vline-fill absolute inset-0 w-full origin-top"
-              style={{ background: "linear-gradient(180deg, #D4A853 0%, rgba(212,168,83,0.3) 100%)" }}
-            />
-          </div>
-
-          <div className="space-y-5">
-            {steps.map((step, i) => {
-              const Icon = step.icon;
-              return (
-                <div key={i} className="proc-mobile-step relative">
-
-                  {/* Timeline dot */}
                   <div
-                    className="absolute -left-[34px] top-5 w-4 h-4 rounded-full border-2 z-10"
+                    className="rounded-2xl p-5"
                     style={{
-                      background: "#09090b",
-                      borderColor: "#D4A853",
-                      boxShadow: "0 0 10px rgba(212,168,83,0.5)",
-                    }}
-                  />
-
-                  {/* Card */}
-                  <div
-                    className="rounded-2xl p-5 flex gap-4 relative overflow-hidden"
-                    style={{
-                      background: "rgba(255,255,255,0.028)",
+                      background: "rgba(255,255,255,0.032)",
                       border: "1px solid rgba(212,168,83,0.12)",
                     }}
                   >
-                    {/* Watermark */}
-                    <span
-                      className="absolute -bottom-1 -right-1 font-bold leading-none select-none pointer-events-none"
-                      style={{ fontSize: "5rem", color: "rgba(212,168,83,0.055)", letterSpacing: "-0.05em" }}
-                    >
-                      {step.number}
-                    </span>
-
-                    {/* Icon */}
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
-                      style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.22)" }}
-                    >
-                      <Icon className="w-4 h-4" style={{ color: "#D4A853" }} />
-                    </div>
-
-                    {/* Text */}
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <h3 className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.9)" }}>
-                          {step.title}
-                        </h3>
-                        <span
-                          className="text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider"
-                          style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}
-                        >
-                          {step.tag}
-                        </span>
+                    {/* Number + icon */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center"
+                        style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)" }}
+                      >
+                        <Icon className="w-4 h-4" style={{ color: "#D4A853" }} />
                       </div>
-                      <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
-                        {step.desc}
-                      </p>
+                      <span
+                        className="font-bold tabular-nums"
+                        style={{ fontSize: "2rem", color: "rgba(212,168,83,0.12)", letterSpacing: "-0.05em" }}
+                      >
+                        {step.number}
+                      </span>
                     </div>
+
+                    <div
+                      className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider mb-2"
+                      style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}
+                    >
+                      {step.tag}
+                    </div>
+
+                    <h3 className="text-sm font-bold mb-1.5" style={{ color: "rgba(255,255,255,0.9)" }}>
+                      {step.title}
+                    </h3>
+                    <p className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ═══════════════ MOBILE vertical track ═══════════════ */}
+        <div className="lg:hidden relative flex gap-6">
+
+          {/* Left: vertical track */}
+          <div
+            className="m-track relative flex-shrink-0"
+            style={{ width: "40px" }}
+          >
+            {/* Base line */}
+            <div
+              className="absolute left-1/2 -translate-x-1/2 top-3 bottom-3 w-[4px] rounded-full"
+              style={{ background: "rgba(212,168,83,0.08)" }}
+            >
+              {/* Gold fill */}
+              <div
+                className="m-fill absolute inset-0 rounded-full"
+                style={{ background: "linear-gradient(180deg, #D4A853, rgba(212,168,83,0.4))" }}
+              />
+            </div>
+
+            {/* Truck — moves down */}
+            <div
+              className="m-truck absolute left-1/2 -translate-x-1/2 top-0 z-20"
+              style={{ width: "40px", height: "40px" }}
+            >
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{
+                  background: "#D4A853",
+                  boxShadow: "0 0 0 5px rgba(212,168,83,0.15), 0 0 16px rgba(212,168,83,0.4)",
+                }}
+              >
+                {/* Rotated truck for vertical movement */}
+                <Truck className="w-4 h-4 text-black rotate-90" />
+              </div>
+            </div>
+
+            {/* Dots at each step */}
+            {steps.map((_, i) => (
+              <div
+                key={i}
+                className="m-dot absolute left-1/2 -translate-x-1/2 rounded-full"
+                style={{
+                  width: "14px", height: "14px",
+                  top: `calc(${(i / (steps.length - 1)) * 100}% - 7px)`,
+                  background: "rgba(212,168,83,0.2)",
+                  border: "2px solid rgba(212,168,83,0.3)",
+                  transition: "box-shadow 0.3s",
+                  zIndex: 5,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Right: cards */}
+          <div className="flex-1 flex flex-col gap-4">
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <div
+                  key={i}
+                  className="m-card rounded-2xl p-4 flex gap-3 items-start"
+                  style={{
+                    background: "rgba(255,255,255,0.028)",
+                    border: "1px solid rgba(212,168,83,0.1)",
+                  }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                    style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)" }}
+                  >
+                    <Icon className="w-4 h-4" style={{ color: "#D4A853" }} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <h3 className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.9)" }}>
+                        {step.title}
+                      </h3>
+                      <span
+                        className="text-[9px] font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.2)", color: "#D4A853" }}
+                      >
+                        {step.tag}
+                      </span>
+                    </div>
+                    <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+                      {step.desc}
+                    </p>
                   </div>
                 </div>
               );

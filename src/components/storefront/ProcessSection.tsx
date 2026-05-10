@@ -43,7 +43,7 @@ const steps = [
   },
 ];
 
-/* Card x-shift per index: prevent overflow at left/right edges */
+/** Card x-offset per index to prevent overflow at left/right edges */
 const CARD_X: Record<number, string> = {
   0: "translateX(0)",
   1: "translateX(-50%)",
@@ -51,8 +51,8 @@ const CARD_X: Record<number, string> = {
   3: "translateX(-100%)",
 };
 
-const CONN_H = 60; // connector height in px
-const CARD_H = 150; // approximate card height in px (used for safe top calc)
+const CONN_H = 60;   // connector height px
+const CARD_H = 150;  // approximate card height px
 
 export function ProcessSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -63,27 +63,30 @@ export function ProcessSection() {
 
     const isMobile = window.innerWidth < 1024;
 
-    /* ════════════════ DESKTOP ════════════════ */
+    /* ══════════════════════════════════
+       DESKTOP — horizontal truck rail
+    ══════════════════════════════════ */
     if (!isMobile) {
+      const trackEl = sectionRef.current.querySelector<HTMLElement>(".d-track");
       const truckEl = sectionRef.current.querySelector<HTMLElement>(".d-truck");
       const fillEl  = sectionRef.current.querySelector<HTMLElement>(".d-fill");
-      const trackEl = sectionRef.current.querySelector<HTMLElement>(".d-track");
       const dotEls  = sectionRef.current.querySelectorAll<HTMLElement>(".d-dot");
       const cardEls = sectionRef.current.querySelectorAll<HTMLElement>(".d-card");
       const connEls = sectionRef.current.querySelectorAll<HTMLElement>(".d-conn");
 
-      if (!truckEl || !fillEl || !trackEl) return;
+      if (!trackEl || !truckEl || !fillEl) return;
 
-      // ── Let GSAP own ALL transforms on the truck ──────────────
-      // CSS has `top: 50%` + NO css transform; GSAP supplies yPercent:-50
-      gsap.set(truckEl, { yPercent: -50 });
+      // ── Key fix: GSAP owns ALL transforms on the truck ──────────────────
+      // Truck CSS has top:0 left:0 (no css transform).
+      // We position it vertically via GSAP y so there's no transform conflict
+      // when we later animate x.
+      const centerY = trackEl.offsetHeight / 2 - 24; // half track - half truck (24px)
+      gsap.set(truckEl, { x: 0, y: centerY });
 
       // Initial states
       gsap.set(fillEl,  { scaleX: 0, transformOrigin: "left center" });
       gsap.set(cardEls, { opacity: 0.1, y: 20 });
       gsap.set(dotEls,  { scale: 0.5, opacity: 0.25 });
-
-      // Set connector transformOrigin correctly per step (above vs below)
       connEls.forEach((conn, i) => {
         gsap.set(conn, {
           scaleY: 0,
@@ -92,9 +95,10 @@ export function ProcessSection() {
         });
       });
 
-      const maxX = trackEl.offsetWidth - truckEl.offsetWidth;
+      // maxX via function so GSAP recalculates on refresh
+      const getMaxX = () => trackEl.offsetWidth - 48;
 
-      gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -102,12 +106,13 @@ export function ProcessSection() {
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
           onUpdate(self) {
             const p = self.progress;
             cardEls.forEach((card, i) => {
               const thresh = i / steps.length + 0.01;
               const on = p >= thresh;
-              gsap.to(card, { opacity: on ? 1 : 0.1, y: on ? 0 : 20, duration: 0.3, overwrite: true });
+              gsap.to(card,    { opacity: on ? 1 : 0.1, y: on ? 0 : 20, duration: 0.3, overwrite: true });
               gsap.to(dotEls[i], { scale: on ? 1.15 : 0.5, opacity: on ? 1 : 0.25, duration: 0.3, overwrite: true });
               if (connEls[i]) {
                 gsap.to(connEls[i], { scaleY: on ? 1 : 0, opacity: on ? 0.55 : 0.25, duration: 0.3, overwrite: true });
@@ -115,32 +120,33 @@ export function ProcessSection() {
             });
           },
         },
-      })
-        .to(truckEl, { x: maxX, ease: "none" }, 0)
-        .to(fillEl,  { scaleX: 1, ease: "none" }, 0);
+      });
+
+      tl.to(truckEl, { x: getMaxX, ease: "none" }, 0)
+        .to(fillEl,   { scaleX: 1, ease: "none"  }, 0);
     }
 
-    /* ════════════════ MOBILE ════════════════ */
+    /* ══════════════════════════════════
+       MOBILE — vertical truck rail
+    ══════════════════════════════════ */
     else {
+      const trackEl = sectionRef.current.querySelector<HTMLElement>(".m-track-inner");
       const truckEl = sectionRef.current.querySelector<HTMLElement>(".m-truck");
       const fillEl  = sectionRef.current.querySelector<HTMLElement>(".m-fill");
-      const trackEl = sectionRef.current.querySelector<HTMLElement>(".m-track-inner");
       const dotEls  = sectionRef.current.querySelectorAll<HTMLElement>(".m-dot");
       const cardEls = sectionRef.current.querySelectorAll<HTMLElement>(".m-card");
 
-      if (!truckEl || !fillEl || !trackEl) return;
+      if (!trackEl || !truckEl || !fillEl) return;
 
-      // Let GSAP own ALL transforms on the mobile truck
-      // CSS has `left: 50%` + NO css transform; GSAP supplies xPercent:-50
-      gsap.set(truckEl, { xPercent: -50 });
-
+      // Truck CSS has top:20px left:0 (no transform).
+      // Animate y from 0 → (trackHeight - truckHeight).
       gsap.set(fillEl,  { scaleY: 0, transformOrigin: "top center" });
       gsap.set(cardEls, { opacity: 0.1, x: 20 });
       gsap.set(dotEls,  { scale: 0.5, opacity: 0.25 });
 
-      const maxY = trackEl.offsetHeight - truckEl.offsetHeight;
+      const getMaxY = () => trackEl.offsetHeight - 40;
 
-      gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -148,26 +154,29 @@ export function ProcessSection() {
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
           onUpdate(self) {
             const p = self.progress;
             cardEls.forEach((card, i) => {
               const thresh = i / steps.length + 0.01;
               const on = p >= thresh;
-              gsap.to(card, { opacity: on ? 1 : 0.1, x: on ? 0 : 20, duration: 0.3, overwrite: true });
+              gsap.to(card,    { opacity: on ? 1 : 0.1, x: on ? 0 : 20, duration: 0.3, overwrite: true });
               gsap.to(dotEls[i], { scale: on ? 1.15 : 0.5, opacity: on ? 1 : 0.25, duration: 0.3, overwrite: true });
             });
           },
         },
-      })
-        .to(truckEl, { y: maxY, ease: "none" }, 0)
-        .to(fillEl,  { scaleY: 1, ease: "none" }, 0);
+      });
+
+      tl.to(truckEl, { y: getMaxY, ease: "none" }, 0)
+        .to(fillEl,   { scaleY: 1, ease: "none"  }, 0);
     }
   }, { scope: sectionRef });
 
+  /* ─────────────────────────────────── JSX ─────────────────────────────────── */
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden"
+      className="relative"
       style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}
     >
       {/* Ambient glow */}
@@ -200,15 +209,14 @@ export function ProcessSection() {
           </p>
         </div>
 
-        {/* ════════════════════════════════════════════════
-            DESKTOP — Horizontal truck track
-        ════════════════════════════════════════════════ */}
+        {/* ════════════════════════════════════════
+            DESKTOP — horizontal track
+        ════════════════════════════════════════ */}
         <div
           className="d-track hidden lg:block relative"
-          style={{ height: "420px" }}
+          style={{ height: "460px" }}
         >
-
-          {/* Track road line — perfectly centered, NO CSS transform on line */}
+          {/* Track road line — centered with calc, no transform */}
           <div
             className="absolute left-0 right-0"
             style={{
@@ -218,22 +226,21 @@ export function ProcessSection() {
               borderRadius: "3px",
             }}
           >
-            {/* Gold fill animated by GSAP scaleX */}
+            {/* Gold fill — GSAP animates scaleX */}
             <div
               className="d-fill absolute inset-0 rounded-full"
               style={{ background: "linear-gradient(90deg, #D4A853, rgba(212,168,83,0.4))" }}
             />
           </div>
 
-          {/* Truck — NO css transform, GSAP owns yPercent:-50 */}
+          {/* ── Truck ──────────────────────────────────────────────────────────
+              IMPORTANT: top:0, left:0, NO CSS transform.
+              GSAP positions it with y = centerY and animates x → maxX.
+              This avoids any CSS ↔ GSAP transform conflict.
+          ────────────────────────────────────────────────────────────────── */}
           <div
             className="d-truck absolute z-20"
-            style={{
-              top: "50%",
-              left: 0,
-              width: "48px",
-              height: "48px",
-            }}
+            style={{ top: 0, left: 0, width: "48px", height: "48px" }}
           >
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -246,16 +253,16 @@ export function ProcessSection() {
             </div>
           </div>
 
-          {/* Step nodes */}
+          {/* ── Step nodes ─────────────────────────────────────────────────── */}
           {steps.map((step, i) => {
             const Icon = step.icon;
             const leftPct = `${(i / (steps.length - 1)) * 100}%`;
-            const above = step.above;
+            const above   = step.above;
 
             return (
               <div key={i}>
 
-                {/* Dot — centered with margin (no CSS transform to conflict with GSAP scale) */}
+                {/* Dot — margin centering (no CSS transform → no GSAP scale conflict) */}
                 <div
                   className="d-dot absolute z-10 rounded-full"
                   style={{
@@ -270,7 +277,7 @@ export function ProcessSection() {
                   }}
                 />
 
-                {/* Connector line — transformOrigin set by GSAP */}
+                {/* Connector — transformOrigin set once by GSAP init */}
                 <div
                   className="d-conn absolute"
                   style={{
@@ -281,8 +288,7 @@ export function ProcessSection() {
                     background: "rgba(212,168,83,0.4)",
                     ...(above
                       ? { top: `calc(50% - ${CONN_H}px)` }
-                      : { top: "50%" }
-                    ),
+                      : { top: "50%" }),
                   }}
                 />
 
@@ -295,8 +301,7 @@ export function ProcessSection() {
                     width: "210px",
                     ...(above
                       ? { top: `calc(50% - ${CONN_H + CARD_H}px)` }
-                      : { top: `calc(50% + ${CONN_H}px)` }
-                    ),
+                      : { top: `calc(50% + ${CONN_H}px)` }),
                   }}
                 >
                   <div
@@ -306,7 +311,6 @@ export function ProcessSection() {
                       border: "1px solid rgba(212,168,83,0.12)",
                     }}
                   >
-                    {/* Icon + number */}
                     <div className="flex items-center justify-between mb-3">
                       <div
                         className="w-9 h-9 rounded-lg flex items-center justify-center"
@@ -321,15 +325,12 @@ export function ProcessSection() {
                         {step.number}
                       </span>
                     </div>
-
-                    {/* Tag */}
                     <div
                       className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider mb-2"
                       style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.18)", color: "#D4A853" }}
                     >
                       {step.tag}
                     </div>
-
                     <h3 className="text-sm font-bold mb-1.5" style={{ color: "rgba(255,255,255,0.9)" }}>
                       {step.title}
                     </h3>
@@ -344,15 +345,15 @@ export function ProcessSection() {
           })}
         </div>
 
-        {/* ════════════════════════════════════════════════
-            MOBILE — Vertical truck rail
-        ════════════════════════════════════════════════ */}
+        {/* ════════════════════════════════════════
+            MOBILE — vertical track
+        ════════════════════════════════════════ */}
         <div className="lg:hidden relative flex gap-5">
 
           {/* Left rail column */}
           <div className="relative shrink-0" style={{ width: "40px" }}>
 
-            {/* Vertical track line */}
+            {/* Track inner line */}
             <div
               className="m-track-inner absolute rounded-full"
               style={{
@@ -364,22 +365,19 @@ export function ProcessSection() {
                 background: "rgba(212,168,83,0.08)",
               }}
             >
-              {/* Gold fill animated by GSAP scaleY */}
               <div
                 className="m-fill absolute inset-0 rounded-full"
                 style={{ background: "linear-gradient(180deg, #D4A853, rgba(212,168,83,0.4))" }}
               />
             </div>
 
-            {/* Truck — NO css transform, GSAP owns xPercent:-50 */}
+            {/* ── Mobile truck ───────────────────────────────────────────────────
+                top:20px (aligned with track start), left:0, NO CSS transform.
+                GSAP animates y from 0 to (trackHeight - 40).
+            ─────────────────────────────────────────────────────────────────── */}
             <div
               className="m-truck absolute z-20"
-              style={{
-                left: "50%",
-                top: "20px",
-                width: "40px",
-                height: "40px",
-              }}
+              style={{ top: "20px", left: 0, width: "40px", height: "40px" }}
             >
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -392,7 +390,7 @@ export function ProcessSection() {
               </div>
             </div>
 
-            {/* Step dots — margin-based centering, no CSS transform */}
+            {/* Step dots — margin centering, no CSS transform */}
             {steps.map((_, i) => (
               <div
                 key={i}

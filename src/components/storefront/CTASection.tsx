@@ -1,12 +1,11 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
-import { ArrowRight, Phone, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Clock, Shield } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,148 +15,201 @@ interface CTASectionProps {
   btnText?: string;
 }
 
+const TRUST = [
+  { icon: Clock,  label: "Ücretsiz Keşif Ziyareti"  },
+  { icon: Shield, label: "5 Yıl Garanti"             },
+  { icon: MapPin, label: "Türkiye Geneli Montaj"     },
+];
+
 export function CTASection({
-  title = "Projeniz için Teklif Alın",
+  title   = "Projeniz için Teklif Alın",
   subtitle = "Otel mobilyası ihtiyaçlarınız için ücretsiz keşif ve proje geliştirme hizmetimizden yararlanın.",
   btnText = "Ücretsiz Teklif Al",
 }: CTASectionProps) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const sectionRef  = useRef<HTMLDivElement>(null);
+  const headingRef  = useRef<HTMLDivElement>(null);
+  const rightRef    = useRef<HTMLDivElement>(null);
+  const stripRef    = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!sectionRef.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    gsap.to(glowRef.current, {
-      yPercent: -20,
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
+    gsap.from(headingRef.current, {
+      x: -50, opacity: 0, duration: 0.9, ease: "power3.out",
+      scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
     });
-
-    gsap.from(contentRef.current, {
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-      },
+    gsap.from(rightRef.current, {
+      x: 40, opacity: 0, duration: 0.9, delay: 0.15, ease: "power3.out",
+      scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
+    });
+    gsap.from(stripRef.current, {
+      y: 20, opacity: 0, duration: 0.7, delay: 0.4, ease: "power3.out",
+      scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
     });
   }, { scope: sectionRef });
 
+  /* title word split: first half gold, second half white */
+  const words  = title.split(" ");
+  const half   = Math.ceil(words.length / 2);
+  const goldPart  = words.slice(0, half).join(" ");
+  const whitePart = words.slice(half).join(" ");
+
   return (
-    <section ref={sectionRef} className="py-16 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
-      <div className="max-w-5xl mx-auto">
-        <div
-          ref={contentRef}
-          className="relative rounded-2xl sm:rounded-3xl overflow-hidden p-6 sm:p-12 lg:p-20"
-        >
-          {/* BG layers */}
-          <div className="absolute inset-0"
-            style={{ background: "rgba(212,168,83,0.04)", backdropFilter: "blur(20px)" }} />
-          <div className="absolute inset-0"
-            style={{ background: "linear-gradient(135deg, rgba(212,168,83,0.07) 0%, transparent 50%, rgba(212,168,83,0.03) 100%)" }} />
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden"
+      style={{ background: "rgba(212,168,83,0.03)" }}
+    >
+      {/* top border */}
+      <div className="absolute top-0 inset-x-0 h-px"
+        style={{ background: "linear-gradient(90deg,transparent,rgba(212,168,83,0.25),transparent)" }} />
 
-          {/* Animated glow blob */}
-          <div
-            ref={glowRef}
-            className="absolute top-[-50%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
-            style={{ background: "radial-gradient(ellipse, rgba(212,168,83,0.14) 0%, transparent 70%)", filter: "blur(50px)" }}
-          />
+      {/* bg radial glow */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 70% 80% at 50% 50%,rgba(212,168,83,0.055) 0%,transparent 70%)" }} />
 
-          {/* Corner accents */}
-          <div className="absolute top-0 right-0 w-56 h-56 pointer-events-none"
-            style={{ background: "radial-gradient(circle at top right, rgba(212,168,83,0.1) 0%, transparent 60%)" }} />
-          <div className="absolute bottom-0 left-0 w-56 h-56 pointer-events-none"
-            style={{ background: "radial-gradient(circle at bottom left, rgba(212,168,83,0.07) 0%, transparent 60%)" }} />
+      {/* ── Main row ───────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-16">
 
-          {/* Border */}
-          <div className="absolute inset-0 rounded-3xl pointer-events-none"
-            style={{ border: "1px solid rgba(212,168,83,0.18)" }} />
+          {/* LEFT — heading */}
+          <div ref={headingRef} className="flex-1">
+            {/* eyebrow */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-8" style={{ background: "#D4A853" }} />
+              <span className="text-[10px] font-bold tracking-[0.28em] uppercase"
+                style={{ color: "#D4A853" }}>
+                Hemen Başlayalım
+              </span>
+            </div>
 
-          {/* Dots pattern */}
-          <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
-            style={{
-              backgroundImage: "radial-gradient(circle, #D4A853 1px, transparent 1px)",
-              backgroundSize: "28px 28px",
-            }}
-          />
-
-          {/* Content */}
-          <div className="relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="badge-gold mb-8 mx-auto w-fit"
+            {/* heading */}
+            <h2
+              className="font-black leading-[1.0] tracking-tight mb-5"
+              style={{ fontSize: "clamp(2.2rem, 5.5vw, 5rem)" }}
             >
-              <Sparkles className="w-3 h-3" />
-              Ücretsiz Keşif
-            </motion.div>
-
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
-              <span className="text-gradient-gold">{title.split(" ").slice(0, 3).join(" ")}</span>
-              {title.split(" ").length > 3 && (
+              <span style={{
+                backgroundImage: "linear-gradient(135deg,#F0D070 0%,#D4A853 50%,#C49640 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>
+                {goldPart}
+              </span>
+              {whitePart && (
                 <>
                   <br />
-                  <span className="text-foreground">{title.split(" ").slice(3).join(" ")}</span>
+                  <span style={{ color: "rgba(255,255,255,0.88)" }}>{whitePart}</span>
                 </>
               )}
             </h2>
 
-            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed mb-8 sm:mb-12">
+            <p className="text-sm sm:text-base leading-relaxed"
+              style={{ color: "rgba(255,255,255,0.42)", maxWidth: "420px" }}>
               {subtitle}
             </p>
+          </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* RIGHT — CTA card */}
+          <div ref={rightRef} className="lg:w-[360px] shrink-0">
+            <div
+              className="rounded-2xl p-7 sm:p-8 flex flex-col gap-6"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(212,168,83,0.18)",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.25)",
+              }}
+            >
+              {/* primary CTA */}
               <Link
                 href="/iletisim"
-                className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm overflow-hidden transition-all duration-300 hover:scale-105 hover:glow-gold-subtle"
+                className="group relative flex items-center justify-between w-full px-6 py-4 rounded-xl font-bold text-sm overflow-hidden transition-all duration-300 hover:scale-[1.02]"
                 style={{ background: "#D4A853", color: "#09090b" }}
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  {btnText}
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </span>
-                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12" />
+                <span className="relative z-10">{btnText}</span>
+                <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-600 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
               </Link>
 
+              {/* secondary CTA */}
               <Link
                 href="/projelerimiz"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 hover:border-primary/30"
+                className="flex items-center justify-between w-full px-6 py-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]"
                 style={{
-                  background: "rgba(212,168,83,0.06)",
-                  border: "1px solid rgba(212,168,83,0.18)",
-                  color: "#6B4A35",
+                  background: "rgba(212,168,83,0.07)",
+                  border: "1px solid rgba(212,168,83,0.15)",
+                  color: "rgba(255,255,255,0.65)",
                 }}
               >
-                Projelerimizi Gör
+                <span>Projelerimizi Gör</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
 
-            {/* Trust row */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
-              {[
-                "✦ Ücretsiz Keşif",
-                "✦ 5 Yıl Garanti",
-                "✦ Türkiye Geneli Montaj",
-              ].map((item) => (
-                <span key={item} className="text-xs text-muted-foreground">{item}</span>
-              ))}
+              {/* divider */}
+              <div className="h-px" style={{ background: "rgba(212,168,83,0.1)" }} />
+
+              {/* trust items */}
+              <div className="space-y-3">
+                {TRUST.map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex items-center gap-3">
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(212,168,83,0.1)", border: "1px solid rgba(212,168,83,0.18)" }}
+                    >
+                      <Icon className="w-3.5 h-3.5" style={{ color: "#D4A853" }} />
+                    </div>
+                    <span className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ── Bottom stats strip ─────────────────────────────────── */}
+      <div
+        ref={stripRef}
+        className="border-t"
+        style={{ borderColor: "rgba(212,168,83,0.1)" }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-3 divide-x"
+            style={{ "--tw-divide-opacity": 1, borderColor: "rgba(212,168,83,0.1)" } as React.CSSProperties}>
+            {[
+              { val: "500+", label: "Tamamlanan Proje" },
+              { val: "12 Yıl", label: "Sektör Deneyimi"  },
+              { val: "5.000 m²", label: "Üretim Alanı"   },
+            ].map(({ val, label }, i) => (
+              <div
+                key={i}
+                className="py-5 px-4 sm:px-8 text-center"
+                style={{ borderColor: "rgba(212,168,83,0.1)" }}
+              >
+                <div
+                  className="text-lg sm:text-2xl font-black mb-0.5"
+                  style={{
+                    backgroundImage: "linear-gradient(135deg,#F0D070,#D4A853)",
+                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                  }}
+                >
+                  {val}
+                </div>
+                <div className="text-[10px] sm:text-xs font-medium"
+                  style={{ color: "rgba(255,255,255,0.35)" }}>
+                  {label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+
+      {/* bottom border */}
+      <div className="absolute bottom-0 inset-x-0 h-px"
+        style={{ background: "linear-gradient(90deg,transparent,rgba(212,168,83,0.15),transparent)" }} />
     </section>
   );
 }

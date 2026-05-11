@@ -83,8 +83,10 @@ export function HeroSection({
 
     if (titleRef.current) {
       const split = new SplitType(titleRef.current, { types: "chars,words" });
-      gsap.from(split.chars || [], {
-        y: 80, opacity: 0, rotateX: -60,
+      // Set initial state immediately so chars are hidden before animation starts
+      gsap.set(split.chars || [], { y: 80, opacity: 0, rotateX: -60 });
+      gsap.to(split.chars || [], {
+        y: 0, opacity: 1, rotateX: 0,
         duration: 0.8, ease: "power4.out",
         stagger: 0.018, delay: 0.5,
         transformOrigin: "0% 50% -30",
@@ -178,14 +180,14 @@ export function HeroSection({
           {/* Title — editorial 3-line hierarchy */}
           <h1
             ref={titleRef}
-            className="font-black tracking-tight leading-none mb-6 sm:mb-8 overflow-hidden"
+            className="font-black tracking-tight leading-none mb-6 sm:mb-8"
             style={{ perspective: "800px" }}
           >
             {/* Line 1 — small muted label */}
             <span
               className="block font-medium tracking-widest uppercase mb-3"
               style={{
-                fontSize: "clamp(.75rem, 1.8vw, 1.1rem)",
+                fontSize: "clamp(.7rem, 2.5vw, 1rem)",
                 color: "rgba(255,255,255,0.35)",
                 letterSpacing: "0.22em",
               }}
@@ -263,11 +265,11 @@ export function HeroSection({
       </div>
 
       {/* ══════════════════════════════════════════════════════
-          STATS BAR  — pinned to bottom, full width
+          STATS BAR  — desktop only (hidden on mobile)
       ══════════════════════════════════════════════════════ */}
       <div
         ref={statsRef}
-        className="relative z-10"
+        className="relative z-10 hidden sm:block"
         style={{ borderTop: "1px solid rgba(212,168,83,0.12)" }}
       >
         <div

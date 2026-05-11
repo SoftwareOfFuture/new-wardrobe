@@ -29,7 +29,6 @@ export function CTASection({
   const sectionRef  = useRef<HTMLDivElement>(null);
   const headingRef  = useRef<HTMLDivElement>(null);
   const rightRef    = useRef<HTMLDivElement>(null);
-  const stripRef    = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -41,10 +40,6 @@ export function CTASection({
     });
     gsap.from(rightRef.current, {
       x: 40, opacity: 0, duration: 0.9, delay: 0.15, ease: "power3.out",
-      scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
-    });
-    gsap.from(stripRef.current, {
-      y: 20, opacity: 0, duration: 0.7, delay: 0.4, ease: "power3.out",
       scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
     });
   }, { scope: sectionRef });
@@ -166,44 +161,6 @@ export function CTASection({
             </div>
           </div>
 
-        </div>
-      </div>
-
-      {/* ── Bottom stats strip ─────────────────────────────────── */}
-      <div
-        ref={stripRef}
-        className="border-t"
-        style={{ borderColor: "rgba(212,168,83,0.1)" }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-3 divide-x"
-            style={{ "--tw-divide-opacity": 1, borderColor: "rgba(212,168,83,0.1)" } as React.CSSProperties}>
-            {[
-              { val: "500+", label: "Tamamlanan Proje" },
-              { val: "12 Yıl", label: "Sektör Deneyimi"  },
-              { val: "5.000 m²", label: "Üretim Alanı"   },
-            ].map(({ val, label }, i) => (
-              <div
-                key={i}
-                className="py-5 px-4 sm:px-8 text-center"
-                style={{ borderColor: "rgba(212,168,83,0.1)" }}
-              >
-                <div
-                  className="text-lg sm:text-2xl font-black mb-0.5"
-                  style={{
-                    backgroundImage: "linear-gradient(135deg,#F0D070,#D4A853)",
-                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                  }}
-                >
-                  {val}
-                </div>
-                <div className="text-[10px] sm:text-xs font-medium"
-                  style={{ color: "rgba(255,255,255,0.35)" }}>
-                  {label}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 

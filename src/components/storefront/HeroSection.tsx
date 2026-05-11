@@ -67,36 +67,46 @@ export function HeroSection({
   bgImage,
 }: HeroSectionProps) {
   const [mounted, setMounted] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef     = useRef<HTMLHeadingElement>(null);
-  const subtitleRef  = useRef<HTMLParagraphElement>(null);
-  const ctaRef       = useRef<HTMLDivElement>(null);
-  const badgeRef     = useRef<HTMLDivElement>(null);
-  const statsRef     = useRef<HTMLDivElement>(null);
-  const bgImgRef     = useRef<HTMLDivElement>(null);
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const line1Ref      = useRef<HTMLSpanElement>(null);
+  const line2Ref      = useRef<HTMLSpanElement>(null);
+  const line3Ref      = useRef<HTMLSpanElement>(null);
+  const subtitleRef   = useRef<HTMLParagraphElement>(null);
+  const ctaRef        = useRef<HTMLDivElement>(null);
+  const badgeRef      = useRef<HTMLDivElement>(null);
+  const statsRef      = useRef<HTMLDivElement>(null);
+  const bgImgRef      = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set([titleRef.current, subtitleRef.current, ctaRef.current, badgeRef.current, statsRef.current], { opacity: 1, y: 0 });
+      gsap.set([line1Ref.current, line2Ref.current, line3Ref.current,
+                subtitleRef.current, ctaRef.current, badgeRef.current, statsRef.current],
+        { opacity: 1, y: 0 });
       return;
     }
 
-    if (titleRef.current) {
-      const split = new SplitType(titleRef.current, { types: "chars,words" });
-      // Set initial state immediately so chars are hidden before animation starts
-      gsap.set(split.chars || [], { y: 80, opacity: 0, rotateX: -60 });
+    /* line3 ("Tecrübe") gets char-by-char — plain white, safe for SplitType */
+    if (line3Ref.current) {
+      const split = new SplitType(line3Ref.current, { types: "chars" });
+      gsap.set(split.chars || [], { y: 60, opacity: 0 });
       gsap.to(split.chars || [], {
-        y: 0, opacity: 1, rotateX: 0,
-        duration: 0.8, ease: "power4.out",
-        stagger: 0.018, delay: 0.5,
-        transformOrigin: "0% 50% -30",
+        y: 0, opacity: 1,
+        duration: 0.7, ease: "power4.out",
+        stagger: 0.04, delay: 0.85,
       });
     }
 
-    gsap.from(badgeRef.current,  { y: -20, opacity: 0, duration: 0.6, delay: 0.3,  ease: "power3.out" });
-    gsap.from(subtitleRef.current, { y: 20, opacity: 0, duration: 0.8, delay: 1.25, ease: "power3.out" });
-    gsap.from(ctaRef.current,    { y: 16, opacity: 0, duration: 0.7, delay: 1.45, ease: "power3.out" });
-    gsap.from(statsRef.current,  { y: 16, opacity: 0, duration: 0.7, delay: 1.65, ease: "power3.out" });
+    /* lines 1 & 2 animate as whole blocks — gradient-safe */
+    gsap.set(line1Ref.current, { y: 20, opacity: 0 });
+    gsap.to(line1Ref.current,  { y: 0, opacity: 1, duration: 0.6, delay: 0.3,  ease: "power3.out" });
+
+    gsap.set(line2Ref.current, { y: 40, opacity: 0 });
+    gsap.to(line2Ref.current,  { y: 0, opacity: 1, duration: 0.8, delay: 0.55, ease: "power3.out" });
+
+    gsap.from(badgeRef.current,    { y: -20, opacity: 0, duration: 0.6, delay: 0.15, ease: "power3.out" });
+    gsap.from(subtitleRef.current, { y: 20,  opacity: 0, duration: 0.7, delay: 1.3,  ease: "power3.out" });
+    gsap.from(ctaRef.current,      { y: 16,  opacity: 0, duration: 0.6, delay: 1.5,  ease: "power3.out" });
+    gsap.from(statsRef.current,    { y: 16,  opacity: 0, duration: 0.6, delay: 1.7,  ease: "power3.out" });
 
     if (bgImgRef.current) {
       gsap.to(bgImgRef.current, {
@@ -178,13 +188,11 @@ export function HeroSection({
           </div>
 
           {/* Title — editorial 3-line hierarchy */}
-          <h1
-            ref={titleRef}
-            className="font-black tracking-tight leading-none mb-6 sm:mb-8"
-            style={{ perspective: "800px" }}
-          >
+          <h1 className="font-black tracking-tight leading-none mb-6 sm:mb-8">
+
             {/* Line 1 — small muted label */}
             <span
+              ref={line1Ref}
               className="block font-medium tracking-widest uppercase mb-3"
               style={{
                 fontSize: "clamp(.7rem, 2.5vw, 1rem)",
@@ -195,8 +203,9 @@ export function HeroSection({
               {line1}
             </span>
 
-            {/* Line 2 — the BIG gold number / keyword */}
+            {/* Line 2 — the BIG gold number/keyword (no SplitType — gradient-safe) */}
             <span
+              ref={line2Ref}
               className="block"
               style={{
                 fontSize: "clamp(4.5rem, 14vw, 11rem)",
@@ -210,9 +219,10 @@ export function HeroSection({
               {line2}
             </span>
 
-            {/* Line 3 — white supporting word */}
+            {/* Line 3 — white word, gets char-by-char SplitType animation */}
             {line3 && (
               <span
+                ref={line3Ref}
                 className="block"
                 style={{
                   fontSize: "clamp(2.2rem, 6.5vw, 5.5rem)",
